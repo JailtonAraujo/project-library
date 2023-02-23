@@ -17,7 +17,7 @@ const transport = nodemailer.createTransport({
     },
 });
 
-const sendMail = async ({to,subject,text,html}) =>{
+const sendMail = async ({to,html}) =>{
 
     console.log(user);
     console.log(pass);
@@ -28,15 +28,14 @@ const sendMail = async ({to,subject,text,html}) =>{
         from:user,
         to:"jailtoncapoeira2017@gmail.com",
         replyTo:user,
-        subject:"test nodemail",
-        text:"Send email from nodemail",
-        html:"<p>Testando...</p>"
+        subject:"Email de confirmação!",
+        html:html
     }).then(res=>{
-        console.log(res);
+        console.log(`email sended to ${to};`);
     }).catch(err=>{
         console.log(err)
     })
 
 }
 
-module.exports = sendMail;
+module.exports = {sendMail};

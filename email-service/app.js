@@ -5,25 +5,29 @@ const app = express();
 
 const port = process.env.SERVER_PORT;
 
-const conn = require('./db/conn');
+const connect = require('./db/conn');
+
+const { sendMailCheckIn } = require('./services/SendEmailService');
 
 //listeners
 const listenerCheckIn = require('./listeners/checkInListener');
 
-app.get("/",(req,res)=>{
+app.get("/", async (req,res)=>{
     res.status(200).json({message:`API IS RUNNING...`});
 })
 
-conn.connect((err)=>{
+app.get("/send", async (req,res)=>{
 
-    if(err){
-        console.log(err)
-    }
+    sendMailCheckIn(1);
 
-    app.listen(port,()=>{
-        console.log(`API running port ${port}!`);
-        console.log(`Connected to DB!`);
-        // listenerCheckIn().catch(e => console.error(`[example/consumer] ${e.message}`, e))
-    })
-
+    res.status(200).json({message:`sended`});
 })
+
+        
+app.listen(port,()=>{
+    console.log(`API running port ${port}!`);
+    // listenerCheckIn().catch(e => console.error(`[example/consumer] ${e.message}`, e))
+})
+
+
+
