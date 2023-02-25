@@ -8,11 +8,12 @@ import com.br.checkinproducer.repository.OrderRepository;
 import com.br.checkinproducer.service.CheckInService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
-import java.io.Serializable;
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Log4j2
@@ -26,7 +27,7 @@ public class CheckInServiceImpl implements CheckInService {
 
     private final OrderRepository orderRepository;
 
-    private final KafkaTemplate<String, Serializable> kafkaTemplate;
+//    private final KafkaTemplate<String, Serializable> kafkaTemplate;
 
     @Override
     public Boolean checkBookIsAvailable(Long bookId) {
@@ -48,12 +49,25 @@ public class CheckInServiceImpl implements CheckInService {
     @Override
     public Boolean checkIfCustomerExists(Long customerId) {
 
-        if(customerRepository.findById(customerId).isEmpty()){
+        if(!customerRepository.customerExists(customerId)){
             throw new NoResultException("Customer not found!");
         }
         return true;
     }
 
+    @Override
+    public void changeBookQuantity(int quantity,Long bookId) {
+
+        final int bookQuantity = bookRepository.getQuantity(bookId);
+
+        if(bookQuantity >= quantity){
+            bookRepository.changeQuantityBook((bookQuantity-quantity),bookId);
+        }
+
+    }
+
+
+    @Transactional(rollbackFor = {Exception.class, SQLException.class})
     @Override
     public Order createOrder(Order order) {
 
@@ -63,11 +77,18 @@ public class CheckInServiceImpl implements CheckInService {
         //Verify if Book is available
         checkBookIsAvailable(order.getBook().getId());
 
+        //change quantity book
+        changeBookQuantity(1,order.getBook().getId());
+
+        order.setCheckin_date(LocalDate.now());
+        order.setCheckout_date(LocalDate.now().plusDays(10));
+        order.setValor(15.10F);
+
         Order orderCreated = orderRepository.save(order);
 
-        log.info("Order sent with id: {}",orderCreated.getId());
-
-        kafkaTemplate.send("checkin-topic",orderCreated);
+//        log.info("Order sent with id: {}",orderCreated.getId());
+//
+//        kafkaTemplate.send("checkin-topic",orderCreated);
 
         return orderCreated;
     }

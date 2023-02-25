@@ -8,6 +8,9 @@ public interface CheckInService {
 
      Boolean checkIfCustomerExists(Long customerId);
 
+     void changeBookQuantity(int quantity, Long bookId);
+
+
     public Order createOrder(Order order);
 
 

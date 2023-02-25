@@ -1,5 +1,5 @@
 const { Kafka, logLevel } = require('kafkajs');
-
+const { sendMailCheckIn } = require('../services/SendEmailService');
 
     const kafka = new Kafka({
         clientId: 'my-app',
@@ -24,7 +24,8 @@ const { Kafka, logLevel } = require('kafkajs');
     
     await consumer.run({
         eachMessage: async ({topic, partition, message})=>{
-            console.log(JSON.parse(message.value))
+            // console.log(JSON.parse(message.value).id)
+            await sendMailCheckIn(JSON.parse(message.value).id);
         }
     })
 

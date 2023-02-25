@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Data
 @Entity(name = "tbl_order")
@@ -22,5 +23,11 @@ public class Order implements Serializable {
     @JoinColumn(name = "customer_id")
     @org.hibernate.annotations.ForeignKey(name = "FK_Order_Customer")
     private Customer customer;
+
+    private LocalDate checkin_date;
+
+    private LocalDate checkout_date;
+
+    private Float valor;
 
 }

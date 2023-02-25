@@ -19,19 +19,14 @@ const transport = nodemailer.createTransport({
 
 const sendMail = async ({to,html}) =>{
 
-    console.log(user);
-    console.log(pass);
-    console.log(emailAddressServer);
-    console.log(emailServerPort);
-
     await transport.sendMail({
         from:user,
-        to:"jailtoncapoeira2017@gmail.com",
+        to,
         replyTo:user,
         subject:"Email de confirmação!",
-        html:html
-    }).then(res=>{
-        console.log(`email sended to ${to};`);
+        html
+    }).then(()=>{
+        console.log(`email been sended to: ${to};`);
     }).catch(err=>{
         console.log(err)
     })
