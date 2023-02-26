@@ -28,6 +28,8 @@ public class CheckIn implements Serializable {
 
     private LocalDate checkout_date;
 
+    private String state;
+
     private Float valor;
 
 }

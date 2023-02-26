@@ -10,6 +10,7 @@ public interface CheckInService {
 
      void changeBookQuantity(int quantity, Long bookId);
 
+    Boolean checkState (CheckIn checkIn);
 
     public CheckIn createCheckIn(CheckIn order);
 

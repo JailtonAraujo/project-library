@@ -2,6 +2,7 @@ package com.br.checkinproducer.service.impl;
 
 import com.br.checkinproducer.model.Book;
 import com.br.checkinproducer.model.CheckIn;
+import com.br.checkinproducer.model.States;
 import com.br.checkinproducer.repository.BookRepository;
 import com.br.checkinproducer.repository.CustomerRepository;
 import com.br.checkinproducer.repository.CheckInRepository;
@@ -25,7 +26,7 @@ public class CheckInServiceImpl implements CheckInService {
 
     private final CustomerRepository customerRepository;
 
-    private final CheckInRepository orderRepository;
+    private final CheckInRepository checkInRepository;
 
 //    private final KafkaTemplate<String, Serializable> kafkaTemplate;
 
@@ -66,6 +67,22 @@ public class CheckInServiceImpl implements CheckInService {
 
     }
 
+    @Override
+    public Boolean checkState(CheckIn checkIn) {
+
+        Optional<String> optional = checkInRepository.getState(checkIn.getBook().getId(),checkIn.getCustomer().getId());
+
+        if(!optional.isEmpty() && optional.isPresent()){
+            if(optional.get() == States.PENDING.toString()){
+                //throw new pendingCheckingException
+            } else if (optional.get() == States.LATE.toString()) {
+                //throw new pendingCheckingException
+            }
+        }
+
+        return true;
+    }
+
 
     @Transactional(rollbackFor = {Exception.class, SQLException.class})
     @Override
@@ -77,14 +94,18 @@ public class CheckInServiceImpl implements CheckInService {
         //Verify if Book is available
         checkBookIsAvailable(checkIn.getBook().getId());
 
+        // check if exists checking pending or late
+        checkState(checkIn);
+
         //change quantity book
         changeBookQuantity(1,checkIn.getBook().getId());
 
         checkIn.setCheckin_date(LocalDate.now());
         checkIn.setCheckout_date(LocalDate.now().plusDays(10));
         checkIn.setValor(15.10F);
+        checkIn.setState(States.PENDING.toString());
 
-        CheckIn checkInCreated = orderRepository.save(checkIn);
+        CheckIn checkInCreated = checkInRepository.save(checkIn);
 
 //        log.info("Order sent with id: {}",orderCreated.getId());
 //
