@@ -1,0 +1,18 @@
+server:
+  port: 8100
+  servlet:
+    context-path: /api
+
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: localhost:29092
+  datasource:
+    password: jailton123
+    url: jdbc:mysql://localhost:3306/library_db
+    username: root
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    show_sql: true
