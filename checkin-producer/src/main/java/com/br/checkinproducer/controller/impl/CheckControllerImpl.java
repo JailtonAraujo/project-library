@@ -1,7 +1,7 @@
 package com.br.checkinproducer.controller.impl;
 
 import com.br.checkinproducer.controller.CheckInController;
-import com.br.checkinproducer.model.Order;
+import com.br.checkinproducer.model.CheckIn;
 import com.br.checkinproducer.service.CheckInService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,9 +17,9 @@ public class CheckControllerImpl implements CheckInController {
     private final CheckInService checkInService;
 
     @Override
-    public ResponseEntity<Order> checkIn(Order order) {
+    public ResponseEntity<CheckIn> checkIn(CheckIn checkIn) {
 
-        checkInService.createOrder(order);
+        checkInService.createCheckIn(checkIn);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

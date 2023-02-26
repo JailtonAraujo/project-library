@@ -8,8 +8,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
-@Entity(name = "tbl_order")
-public class Order implements Serializable {
+@Entity(name = "tbl_checkin")
+public class CheckIn implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

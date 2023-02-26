@@ -1,6 +1,6 @@
 package com.br.checkinproducer.controller;
 
-import com.br.checkinproducer.model.Order;
+import com.br.checkinproducer.model.CheckIn;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface CheckInController {
 
     @PostMapping("/")
-    public ResponseEntity<Order> checkIn (@RequestBody Order order);
+    public ResponseEntity<CheckIn> checkIn (@RequestBody CheckIn order);
 
 }

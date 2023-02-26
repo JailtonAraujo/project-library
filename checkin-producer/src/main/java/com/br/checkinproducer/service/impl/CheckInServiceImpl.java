@@ -1,10 +1,10 @@
 package com.br.checkinproducer.service.impl;
 
 import com.br.checkinproducer.model.Book;
-import com.br.checkinproducer.model.Order;
+import com.br.checkinproducer.model.CheckIn;
 import com.br.checkinproducer.repository.BookRepository;
 import com.br.checkinproducer.repository.CustomerRepository;
-import com.br.checkinproducer.repository.OrderRepository;
+import com.br.checkinproducer.repository.CheckInRepository;
 import com.br.checkinproducer.service.CheckInService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -25,7 +25,7 @@ public class CheckInServiceImpl implements CheckInService {
 
     private final CustomerRepository customerRepository;
 
-    private final OrderRepository orderRepository;
+    private final CheckInRepository orderRepository;
 
 //    private final KafkaTemplate<String, Serializable> kafkaTemplate;
 
@@ -69,27 +69,27 @@ public class CheckInServiceImpl implements CheckInService {
 
     @Transactional(rollbackFor = {Exception.class, SQLException.class})
     @Override
-    public Order createOrder(Order order) {
+    public CheckIn createCheckIn(CheckIn checkIn) {
 
         //verify if customer exists
-        checkIfCustomerExists(order.getCustomer().getId());
+        checkIfCustomerExists(checkIn.getCustomer().getId());
 
         //Verify if Book is available
-        checkBookIsAvailable(order.getBook().getId());
+        checkBookIsAvailable(checkIn.getBook().getId());
 
         //change quantity book
-        changeBookQuantity(1,order.getBook().getId());
+        changeBookQuantity(1,checkIn.getBook().getId());
 
-        order.setCheckin_date(LocalDate.now());
-        order.setCheckout_date(LocalDate.now().plusDays(10));
-        order.setValor(15.10F);
+        checkIn.setCheckin_date(LocalDate.now());
+        checkIn.setCheckout_date(LocalDate.now().plusDays(10));
+        checkIn.setValor(15.10F);
 
-        Order orderCreated = orderRepository.save(order);
+        CheckIn checkInCreated = orderRepository.save(checkIn);
 
 //        log.info("Order sent with id: {}",orderCreated.getId());
 //
 //        kafkaTemplate.send("checkin-topic",orderCreated);
 
-        return orderCreated;
+        return checkInCreated;
     }
 }

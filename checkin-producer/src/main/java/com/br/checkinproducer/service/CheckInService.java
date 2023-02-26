@@ -1,6 +1,6 @@
 package com.br.checkinproducer.service;
 
-import com.br.checkinproducer.model.Order;
+import com.br.checkinproducer.model.CheckIn;
 
 public interface CheckInService {
 
@@ -11,7 +11,7 @@ public interface CheckInService {
      void changeBookQuantity(int quantity, Long bookId);
 
 
-    public Order createOrder(Order order);
+    public CheckIn createCheckIn(CheckIn order);
 
 
 
