@@ -1,5 +1,6 @@
 package com.br.checkinproducer.service.impl;
 
+import com.br.checkinproducer.exception.PendingCheckIngException;
 import com.br.checkinproducer.model.Book;
 import com.br.checkinproducer.model.CheckIn;
 import com.br.checkinproducer.model.States;
@@ -68,15 +69,15 @@ public class CheckInServiceImpl implements CheckInService {
     }
 
     @Override
-    public Boolean checkState(CheckIn checkIn) {
+    public Boolean checkState(CheckIn checkIn) throws PendingCheckIngException {
 
         Optional<String> optional = checkInRepository.getState(checkIn.getBook().getId(),checkIn.getCustomer().getId());
 
         if(!optional.isEmpty() && optional.isPresent()){
-            if(optional.get() == States.PENDING.toString()){
-                //throw new pendingCheckingException
-            } else if (optional.get() == States.LATE.toString()) {
-                //throw new pendingCheckingException
+            if(optional.get().equalsIgnoreCase(States.PENDING.toString())){
+                throw new PendingCheckIngException("you have a pending order!");
+            } else if (optional.get().equalsIgnoreCase(States.LATE.toString())) {
+                throw new PendingCheckIngException("you have a late order!");
             }
         }
 
@@ -86,7 +87,7 @@ public class CheckInServiceImpl implements CheckInService {
 
     @Transactional(rollbackFor = {Exception.class, SQLException.class})
     @Override
-    public CheckIn createCheckIn(CheckIn checkIn) {
+    public CheckIn createCheckIn(CheckIn checkIn) throws PendingCheckIngException {
 
         //verify if customer exists
         checkIfCustomerExists(checkIn.getCustomer().getId());

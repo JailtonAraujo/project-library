@@ -1,9 +1,12 @@
 package com.br.checkoutservice.model;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+@Data
 @Entity(name = "tbl_checkout")
 public class CheckOut implements Serializable {
 
@@ -14,10 +17,13 @@ public class CheckOut implements Serializable {
     @OneToOne(optional = false, cascade = CascadeType.MERGE)
     @JoinColumn(name = "book_id")
     private Book book;
+//
+//    @OneToOne(optional = false,cascade = CascadeType.MERGE)
+//    @JoinColumn(name = "customer_id")
+//    private Customer customer;
 
-    @OneToOne(optional = false,cascade = CascadeType.MERGE)
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @Column(name = "checkin_id")
+    private Long CheckInId;
 
     @Column(name = "valor_pago")
     private Float valorPago;

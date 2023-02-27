@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface CheckInRepository extends JpaRepository<CheckIn, Long> {
 
-    @Query(value = "select checkin.state from tbl_checkin checkin where checkin.book_id = ?1 and checkin.customer_id = ?2")
+    @Query(value = "select checkin.state from tbl_checkin checkin where checkin.book.id = ?1 and checkin.customer.id = ?2")
     public Optional<String> getState (Long bookId,Long customer_id);
 
 }

@@ -1,6 +1,7 @@
 package com.br.checkinproducer.controller.impl;
 
 import com.br.checkinproducer.controller.CheckInController;
+import com.br.checkinproducer.exception.PendingCheckIngException;
 import com.br.checkinproducer.model.CheckIn;
 import com.br.checkinproducer.service.CheckInService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class CheckControllerImpl implements CheckInController {
     private final CheckInService checkInService;
 
     @Override
-    public ResponseEntity<CheckIn> checkIn(CheckIn checkIn) {
+    public ResponseEntity<CheckIn> checkIn(CheckIn checkIn) throws PendingCheckIngException {
 
         checkInService.createCheckIn(checkIn);
 
