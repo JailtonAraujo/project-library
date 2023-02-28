@@ -1,6 +1,7 @@
 package com.br.checkoutservice.controller.impl;
 
 import com.br.checkoutservice.controller.CheckOutController;
+import com.br.checkoutservice.exception.CheckInException;
 import com.br.checkoutservice.model.CheckOut;
 import com.br.checkoutservice.service.CheckOutService;
 import lombok.RequiredArgsConstructor;
@@ -11,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/checkou")
+@RequestMapping("/checkout")
 public class CheckOutControllerImpl implements CheckOutController {
 
     private final CheckOutService checkOutService;
 
     @Override
-    public ResponseEntity<CheckOut> checkOut(CheckOut checkOut) {
+    public ResponseEntity<CheckOut> checkOut(CheckOut checkOut) throws CheckInException {
 
         checkOutService.createCheckOut(checkOut);
 

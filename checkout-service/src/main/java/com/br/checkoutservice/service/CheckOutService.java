@@ -1,10 +1,11 @@
 package com.br.checkoutservice.service;
 
+import com.br.checkoutservice.exception.CheckInException;
 import com.br.checkoutservice.model.CheckOut;
 
 public interface CheckOutService {
 
-    Boolean checkCheckInStatus (Long checkInId);
+    Boolean checkCheckInStatus (Long checkInId) throws CheckInException;
 
     CheckOut calcLate (CheckOut checkOut);
 
@@ -12,6 +13,6 @@ public interface CheckOutService {
 
     void changeBookQuantity(Long bookId );
 
-    public CheckOut createCheckOut (CheckOut checkOut);
+    public CheckOut createCheckOut (CheckOut checkOut) throws CheckInException;
 
 }

@@ -1,5 +1,6 @@
 package com.br.checkoutservice.service.impl;
 
+import com.br.checkoutservice.exception.CheckInException;
 import com.br.checkoutservice.model.CheckOut;
 import com.br.checkoutservice.model.States;
 import com.br.checkoutservice.repository.BookRepository;
@@ -24,14 +25,14 @@ public class CheckOutServiceImpl implements CheckOutService {
     private final CheckOutRepository checkOutRepository;
 
     @Override
-    public Boolean checkCheckInStatus(Long checkInId) {
+    public Boolean checkCheckInStatus(Long checkInId) throws CheckInException {
 
         Optional<String> optional = checkOutRepository.getState(checkInId);
 
         if(!optional.isPresent() || optional.isEmpty()){
-            // throw new CheckInException("Order not found! - id: "+checkInId);
+             throw new CheckInException("Order not found! - id: "+checkInId);
         } else if (optional.get().equalsIgnoreCase(States.CONCLUDED.toString())) {
-            // throw new CheckInException("Order already concluded! - id: "checkInId);
+             throw new CheckInException("Order already concluded! - id: "+checkInId);
         }
 
         return true;
@@ -73,7 +74,7 @@ public class CheckOutServiceImpl implements CheckOutService {
 
     @Transactional(rollbackFor = {Exception.class, SQLException.class})
     @Override
-    public CheckOut createCheckOut(CheckOut checkOut) {
+    public CheckOut createCheckOut(CheckOut checkOut) throws CheckInException {
 
         checkCheckInStatus(checkOut.getCheckInId());
 
