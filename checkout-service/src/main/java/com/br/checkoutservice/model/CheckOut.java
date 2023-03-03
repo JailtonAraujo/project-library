@@ -17,13 +17,13 @@ public class CheckOut implements Serializable {
     @OneToOne(optional = false, cascade = CascadeType.MERGE)
     @JoinColumn(name = "book_id")
     private Book book;
-//
-//    @OneToOne(optional = false,cascade = CascadeType.MERGE)
-//    @JoinColumn(name = "customer_id")
-//    private Customer customer;
+
+    @OneToOne(optional = false,cascade = CascadeType.MERGE)
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
     @Column(name = "checkin_id")
-    private Long CheckInId;
+    private Long checkInId;
 
     @Column(name = "valor_pago")
     private Float valorPago;

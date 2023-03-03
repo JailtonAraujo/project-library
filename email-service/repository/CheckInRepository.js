@@ -24,8 +24,8 @@ const findById = async (id)=>{
 }
 
 
-const OrderRepository = {
-    findById
-}
+// const CheckInRepository = {
+//     findById
+// }
 
-module.exports = OrderRepository;
+module.exports = {findById};

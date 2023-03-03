@@ -9,9 +9,10 @@ const connect = require('./db/conn');
 
 //listeners
 const listenerCheckIn = require('./listeners/checkInListener');
+const listenerCheckOut = require('./listeners/checkOutListener');
 
 //services
-const { sendMailCheckIn } = require('./services/SendEmailService');
+const { sendMailCheckOut,sendMailCheckIn } = require('./services/SendEmailService');
 
 //Test API state
 app.get("/", async (req,res)=>{
@@ -21,14 +22,15 @@ app.get("/", async (req,res)=>{
 
 app.get("/send", async (req,res)=>{
     
-    sendMailCheckIn(4);
+    await sendMailCheckOut(2)
     res.status(200).json({message:`SEND...`});
 })
 
         
 app.listen(port,()=>{
     console.log(`API running port ${port}!`);
-    //listenerCheckIn().catch(e => console.error(`[example/consumer] ${e.message}`, e))
+    //listenerCheckIn().catch(e => console.error(`[checkin/consumer] ${e.message}`, e))
+    // listenerCheckOut().catch(e => console.error(`[checkout/consumer] ${e.message}`, e));
 })
 
 

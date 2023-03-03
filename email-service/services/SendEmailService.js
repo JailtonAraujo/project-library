@@ -1,4 +1,5 @@
-const { findById } = require('../repository/OrderRepository');
+const { findById } = require('../repository/CheckInRepository');
+const { findCheckOutById } = require('../repository/checkOutRepository');
 const { sendMail } = require('./EmailService');
 const { formatDate } = require('../helpers/converteDateFormat');
 
@@ -11,23 +12,46 @@ const sendMailCheckIn = async (checkInId) =>{
         return;
     }
 
+    console.log(checkIn)
+
     try {
-        await sendMail({to:checkIn.customer_email,html:buildBodyMail(checkIn)});   
+        await sendMail({to:checkIn.customer_email,html:buildBodyMailCheckIn(checkIn)});
+        return;   
     } catch (error) {
         console.log(`Erro send email to :${checkIn.customer_email} -> ${error}`);
     }
     
 }
 
+const sendMailCheckOut = async (checkOutId) =>{
+
+    const checkOut = await findCheckOutById(checkOutId);
+    console.log(checkOut);
+
+    if(checkOut === null){
+        console.log(`CheckOut with id: ${checkOutId} not found;`);
+        return;
+    }
+
+    try{
+
+        await sendMail({to:checkOut.customer_email,html:buildBodyMailCheckOut(checkOut)});
+        return;
+    } catch(error){
+        console.log(`Erro send email to :${checkOut.customer_email} -> ${error}`);
+    }
+
+}
 
 
-const buildBodyMail = (checkIn) =>{
+
+const buildBodyMailCheckIn = (checkIn) =>{
 
     const bodyEmail = `
     <html>
     <body>
         <main >
-            <h1 style="color: green; margin-bottom: 0.6em;">Pedido de emprestimo confimado!</h1>
+            <h1 style="color: green; margin-bottom: 0.6em;">Emprestimo confimado!</h1>
             <div>
                 <h2 style="padding-bottom: 0.4em;">Olá ${checkIn.customer_name}, segue abaixo as informações do seu pedido:</h2>
                 <p>Nome do livro: <span style="font-weight: bold; font-size: 1.2em;"> ${checkIn.book_name} </span> </p>
@@ -51,10 +75,38 @@ return bodyEmail;
 }
 
 
+const buildBodyMailCheckOut = (checkOut) =>{
+
+    const bodyEmail = `
+    <html>
+    <body>
+        <main >
+            <h1 style="color: green; margin-bottom: 0.6em;">Devolução confirmada!</h1>
+            <div>
+                <h2 style="padding-bottom: 0.4em;">Olá ${checkOut.customer_name}, segue abaixo as informações da devolução:</h2>
+                <p>Nome do livro: <span style="font-weight: bold; font-size: 1.2em;"> ${checkOut.book_name} </span> </p>
+                <p>Gênereno: <span style="font-weight: bold; font-size: 1.2em;"> ${checkOut.gender} </span> </p>
+                <p>Data da devolução: <span style="font-weight: bold; font-size: 1.2em;"> ${formatDate(checkOut.checkout_date)} </span> </p>
+                <p>valor: <span style="font-weight: bold; font-size: 1.2em;"> R$${checkOut.valor_pago.toFixed(2)} </span> </p>
+                <p> Dias de atraso: <span style="font-weight: bold; font-size: 1.2em;" > ${checkOut.dias_atraso} dias</span> </p>
+                <p> Taxa por de atraso: <span style="font-weight: bold; font-size: 1.2em;" > R$${checkOut.taxa_atraso.toFixed(2)}</span> </p>
+                
+            </div>
+        </main>
+    </body>
+    </html>
+`;
+
+return bodyEmail;
+
+}
+
+
 
 
 const SendEmails = {
-    sendMailCheckIn
+    sendMailCheckIn,
+    sendMailCheckOut,
 }
 
 module.exports = SendEmails;

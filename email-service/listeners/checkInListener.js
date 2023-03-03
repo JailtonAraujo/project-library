@@ -12,7 +12,7 @@ const { sendMailCheckIn } = require('../services/SendEmailService');
       });
     
     const consumer = kafka.consumer({
-        groupId:"test-group"
+        groupId:"checkin-group"
     })
     const topic = 'checkin-topic'
 

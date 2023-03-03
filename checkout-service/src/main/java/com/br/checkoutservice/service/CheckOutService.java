@@ -5,7 +5,7 @@ import com.br.checkoutservice.model.CheckOut;
 
 public interface CheckOutService {
 
-    Boolean checkCheckInStatus (Long checkInId) throws CheckInException;
+    Boolean checkCheckInStatus (CheckOut checkOut) throws CheckInException;
 
     CheckOut calcLate (CheckOut checkOut);
 

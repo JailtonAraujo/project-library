@@ -3,36 +3,42 @@ package com.br.checkoutservice.service.impl;
 import com.br.checkoutservice.exception.CheckInException;
 import com.br.checkoutservice.model.CheckOut;
 import com.br.checkoutservice.model.States;
-import com.br.checkoutservice.repository.BookRepository;
 import com.br.checkoutservice.repository.CheckOutRepository;
+import com.br.checkoutservice.repository.CustomRepository;
 import com.br.checkoutservice.repository.CustomerRepository;
 import com.br.checkoutservice.service.CheckOutService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Optional;
 
+@Log4j2
 @RequiredArgsConstructor
 @Service
 public class CheckOutServiceImpl implements CheckOutService {
 
-    private final BookRepository bookRepository;
-
     private final CheckOutRepository checkOutRepository;
 
+    private final CustomRepository customRepository;
+
+    private final KafkaTemplate<String, Serializable> kafkaTemplate;
+
     @Override
-    public Boolean checkCheckInStatus(Long checkInId) throws CheckInException {
+    public Boolean checkCheckInStatus(CheckOut checkOut) throws CheckInException {
 
-        Optional<String> optional = checkOutRepository.getState(checkInId);
+        Optional<String> optional = checkOutRepository.getState(checkOut.getCheckInId(),checkOut.getCustomer().getId(),checkOut.getBook().getId());
 
-        if(!optional.isPresent() || optional.isEmpty()){
-             throw new CheckInException("Order not found! - id: "+checkInId);
+        if(!optional.isPresent() || optional.isEmpty()){//esta restornando masi que um
+             throw new CheckInException("Order not found! - id: "+checkOut.getCheckInId());
         } else if (optional.get().equalsIgnoreCase(States.CONCLUDED.toString())) {
-             throw new CheckInException("Order already concluded! - id: "+checkInId);
+             throw new CheckInException("Order already concluded! - id: "+checkOut.getCheckInId());
         }
 
         return true;
@@ -41,14 +47,16 @@ public class CheckOutServiceImpl implements CheckOutService {
     @Override
     public CheckOut calcLate(CheckOut checkOut) {
 
-        LocalDate checkin_date = checkOutRepository.getDateCheckIn(checkOut.getId());
+        var checkIn = customRepository.getCheckInDateAndValue(checkOut.getCheckInId());
 
-        int daysLate = Period.between(checkin_date,LocalDate.now()).getDays();
+
+        int daysLate = Period.between(checkIn.getCheckOut_date(),LocalDate.now()).getDays();
 
         // if order not late
-        if(daysLate == 0){
+        if(LocalDate.now().isBefore(checkIn.getCheckOut_date()) || checkIn.getCheckOut_date().isEqual(LocalDate.now())){
             checkOut.setDiasAtraso(0);
             checkOut.setTaxaAtraso(0F);
+            checkOut.setValorPago(checkIn.getValue());
             return  checkOut;
         }
 
@@ -56,6 +64,7 @@ public class CheckOutServiceImpl implements CheckOutService {
 
         checkOut.setTaxaAtraso(lateFeePerDay * daysLate);
         checkOut.setDiasAtraso(daysLate);
+        checkOut.setValorPago(checkIn.getValue()+(lateFeePerDay * daysLate));
 
         return checkOut;
     }
@@ -63,26 +72,38 @@ public class CheckOutServiceImpl implements CheckOutService {
 
     @Override
     public void changeCheckInState(Long checkInId) {
-        checkOutRepository.changeStateCheck(checkInId,States.CONCLUDED.toString());
+        customRepository.changeStateCheckIn(checkInId);
     }
 
     @Override
     public void changeBookQuantity(Long bookId) {
-        int quantity = bookRepository.getQuantity(bookId);
-        bookRepository.changeQuantity(quantity+1,bookId);
+        customRepository.changeBookQuantity(bookId);
     }
 
     @Transactional(rollbackFor = {Exception.class, SQLException.class})
     @Override
     public CheckOut createCheckOut(CheckOut checkOut) throws CheckInException {
 
-        checkCheckInStatus(checkOut.getCheckInId());
+        //Check checkIn status
+         checkCheckInStatus(checkOut);
 
+         //Calc fee late and full value
         var checkOutCalc =  calcLate(checkOut);
 
+        //update book add 1 unity
         changeBookQuantity(checkOut.getBook().getId());
 
+        //if all done change state to CONCLUDE
+        changeCheckInState(checkOut.getCheckInId());
 
-        return checkOutRepository.save(checkOutCalc);
+        checkOutCalc.setDateCheckOut(LocalDate.now());
+
+        var checkOutCreated = checkOutRepository.save(checkOutCalc);
+
+        log.info("CheckOut sent with id: {}",checkOutCreated.getId());
+
+        kafkaTemplate.send("checkout-topic",checkOutCreated);
+
+        return checkOutCreated;
     }
 }
