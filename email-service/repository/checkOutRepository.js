@@ -6,11 +6,11 @@ const findCheckOutById  = async (checkOutId)=>{
 
     const sql = `select 
     tbl_checkout.checkout_date as checkout_date, tbl_checkout.valor_pago, tbl_checkout.dias_atraso, tbl_checkout.taxa_atraso,
-    tbl_customer.email as customer_email, tbl_customer.name as customer_name,
-    tbl_book.name as book_name, tbl_book.gender
+    tbl_customers.email as customer_email, tbl_customers.name as customer_name,
+    tbl_books.name as book_name, tbl_books.gender
     from tbl_checkout
-    inner join tbl_customer on tbl_customer.id = tbl_checkout.customer_id
-    inner join tbl_book on tbl_book.id = tbl_checkout.book_id
+    inner join tbl_customers on tbl_customers.id = tbl_checkout.customer_id
+    inner join tbl_books on tbl_books.id = tbl_checkout.book_id
     where tbl_checkout.id = ${checkOutId};`;
 
     const [rows] = await conn.query(sql);

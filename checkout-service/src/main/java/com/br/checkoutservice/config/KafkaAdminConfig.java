@@ -11,7 +11,7 @@ import org.springframework.kafka.core.KafkaAdmin;
 import java.util.HashMap;
 
 @RequiredArgsConstructor
-@Configuration
+//@Configuration
 public class KafkaAdminConfig {
 
     private final KafkaProperties properties;

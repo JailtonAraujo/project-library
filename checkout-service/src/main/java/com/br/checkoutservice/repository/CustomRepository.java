@@ -24,8 +24,8 @@ public class CustomRepository {
 
         try {
 
-            Query query = entityManager.createNativeQuery("UPDATE tbl_book set quantity = ? where id = ?");
-            query.setParameter(1,1);
+            Query query = entityManager.createNativeQuery("UPDATE tbl_books set quantity = ? where id = ?");
+            query.setParameter(1,(countBookCurrentQuantity(bookId)+1));
             query.setParameter(2,bookId);
 
             query.executeUpdate();
@@ -71,6 +71,17 @@ public class CustomRepository {
         }
 
         return null;
+
+    }
+
+    public int countBookCurrentQuantity (Long bookId){
+
+        Query query = entityManager.createNativeQuery("SELECT quantity FROM tbl_books WHERE id = ?");
+        query.setParameter(1,bookId);
+
+        Object result = query.getSingleResult();
+
+        return Integer.parseInt(result.toString());
 
     }
 

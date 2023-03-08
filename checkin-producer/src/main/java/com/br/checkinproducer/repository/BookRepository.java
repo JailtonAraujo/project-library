@@ -10,10 +10,10 @@ import org.springframework.stereotype.Repository;
 public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Modifying
-    @Query(value="UPDATE tbl_book SET quantity = ?1 WHERE tbl_book.id = ?2",nativeQuery = true)
+    @Query(value="UPDATE tbl_books SET quantity = ?1 WHERE tbl_books.id = ?2",nativeQuery = true)
     public void changeQuantityBook(int quantity, Long bookId);
 
-    @Query(value = "SELECT b.quantity FROM tbl_book b WHERE b.id = ?1 ")
+    @Query(value = "SELECT b.quantity FROM tbl_books b WHERE b.id = ?1 ")
     public int getQuantity (Long bookId);
 
 }

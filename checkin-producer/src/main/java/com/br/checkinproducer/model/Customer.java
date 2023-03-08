@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 @Data
-@Entity(name = "tbl_customer")
+@Entity(name = "tbl_customers")
 public class Customer implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

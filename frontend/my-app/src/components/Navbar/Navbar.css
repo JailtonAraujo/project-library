@@ -1,0 +1,32 @@
+.navbar{
+    width: 100;
+    border-bottom: 2px solid #C71585;
+}
+
+.content-nav{
+    width: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.2em 1.2em;
+}
+
+.brand img{
+    width: 50px;
+}
+
+
+.links{
+    display: flex;
+    gap: 0.5em;
+}
+
+.links li{
+    list-style: none;
+}
+
+.links a{
+    text-decoration: none;
+    font-weight: bold;
+    color: #000;
+}

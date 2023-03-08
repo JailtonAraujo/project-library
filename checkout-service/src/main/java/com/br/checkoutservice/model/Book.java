@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
-@Entity(name = "tbl_book")
+@Entity(name = "tbl_books")
 public class Book implements Serializable {
 
     @Id

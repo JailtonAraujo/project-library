@@ -17,6 +17,7 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 @Log4j2
@@ -28,7 +29,7 @@ public class CheckOutServiceImpl implements CheckOutService {
 
     private final CustomRepository customRepository;
 
-    private final KafkaTemplate<String, Serializable> kafkaTemplate;
+//    private final KafkaTemplate<String, Serializable> kafkaTemplate;
 
     @Override
     public Boolean checkCheckInStatus(CheckOut checkOut) throws CheckInException {
@@ -50,7 +51,7 @@ public class CheckOutServiceImpl implements CheckOutService {
         var checkIn = customRepository.getCheckInDateAndValue(checkOut.getCheckInId());
 
 
-        int daysLate = Period.between(checkIn.getCheckOut_date(),LocalDate.now()).getDays();
+        int daysLate = (int) ChronoUnit.DAYS.between(checkIn.getCheckOut_date(),LocalDate.now()) * 1;
 
         // if order not late
         if(LocalDate.now().isBefore(checkIn.getCheckOut_date()) || checkIn.getCheckOut_date().isEqual(LocalDate.now())){
@@ -102,7 +103,7 @@ public class CheckOutServiceImpl implements CheckOutService {
 
         log.info("CheckOut sent with id: {}",checkOutCreated.getId());
 
-        kafkaTemplate.send("checkout-topic",checkOutCreated);
+//        kafkaTemplate.send("checkout-topic",checkOutCreated);
 
         return checkOutCreated;
     }
