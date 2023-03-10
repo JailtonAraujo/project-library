@@ -1,0 +1,32 @@
+.book-form, .form-control{
+    width: 100%;
+}
+
+.form-group{
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group span{
+    font-weight: bold;
+    margin-bottom: 0.2em;
+}
+
+.form-group input{
+    margin-bottom: 0.6em;
+    outline: none;
+    font-size: 1em;
+    padding: 0.4em 0.3em;
+    border: 1px solid #000;
+    border-radius: 3px;
+}
+
+.previw-image{
+    font-weight: bold;
+    margin: 1em 0em;
+}
+
+.previw-image img{
+    width: 100%;
+    height: 360px;
+}

@@ -17,6 +17,9 @@ const Book = db.define('tbl_book',{
         type:DataTypes.NUMBER,
         require:true
     },
+    image:{
+        type:DataTypes.STRING
+    }
 });
 
 const bookExists = async (id) =>{

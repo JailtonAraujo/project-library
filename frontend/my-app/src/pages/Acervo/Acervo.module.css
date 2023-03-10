@@ -1,0 +1,39 @@
+.content_acervo{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding-top: 4em;
+}
+
+
+.title{
+    width: 100%;
+    text-align: center;
+    margin: 1em 0em;
+    font-size: 1em;
+}
+
+.options{
+    margin-bottom: 1em;    
+}
+
+.content_books{
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.list_books{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5em;
+    padding: 2em ;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+
+.list_books li{
+    list-style: none;
+}
+

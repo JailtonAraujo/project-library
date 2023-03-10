@@ -15,7 +15,7 @@ const {
 const { bookDateValid } = require('../middlewares/BookValidator');
 
 router.post('/',bookDateValid,imageUpload.single('image'),saveBook);
-router.get('/',findAllBooks);
+router.get('/', findAllBooks);
 router.get('/find/name',findByName);
 router.get('/find/gender',findByGender);
 router.patch('/update',bookDateValid,updateBook);

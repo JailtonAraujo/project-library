@@ -4,6 +4,7 @@ const {Book,bookExists} = require('../models/Book');
 const saveBook = async (req, res) => {
 
     const { name, gender, quantity } = req.body;
+    const image = req.file.filename;
 
     if(!name){
         res.status(422).json({message:"Name is required!"});
@@ -19,7 +20,8 @@ const saveBook = async (req, res) => {
     const book = await Book.create({
        name,
        gender,
-       quantity
+       quantity,
+       image
     });
 
     res.status(201).json(book);

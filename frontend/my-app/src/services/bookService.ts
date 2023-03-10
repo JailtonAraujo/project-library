@@ -1,8 +1,28 @@
-import { useState } from 'react';
-import { environment } from  '../environments';
-
-import { Book } from '../interfaces/Book';
+import { environment } from '../environments';
 
 const bookEndPoint = `${environment.baseApicustomersAndBooks}/book`;
- 
 
+
+const findAllBooks = async () => {
+
+    try {
+
+        const data = await fetch(`${bookEndPoint}/`)
+            .then((res) => res.json())
+            .catch((err) => err);
+
+            console.log(data)
+
+        return data;
+
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
+const bookService = {
+    findAllBooks
+}
+
+export default bookService;
