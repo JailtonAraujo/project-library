@@ -1,21 +1,28 @@
 const { Op } = require('sequelize');
-const {Book,bookExists} = require('../models/Book');
+const {Book, bookExists, getImage} = require('../models/Book');
+
+const { deleteImage } = require('../helpers/handleImage');
 
 const saveBook = async (req, res) => {
 
     const { name, gender, quantity } = req.body;
-    const image = req.file.filename;
+	
 
-    // if(!name){
-    //     res.status(422).json({message:"Name is required!"});
-    //     return;
-    // }else if (!gender){
-    //     res.status(422).json({message:"Gender is required!"});
-    //     return;
-    // }else if (!quantity || quantity === 0){
-    //     res.status(422).json({message:"quantity must be more that 0!"});
-    //     return;
-    // }
+     if(!name){
+         res.status(422).json({message:"Name is required!",error:true});
+         return;
+     }else if (!gender){
+         res.status(422).json({message:"Gender is required!",error:true});
+         return;
+     }else if (!quantity || quantity === 0){
+         res.status(422).json({message:"quantity must be more that 0!",error:true});
+         return;
+     }else if(!req.file){
+		res.status(422).json({message:"Image is required!",error:true});
+        return;	
+	}
+	 
+	  const image = req.file.filename;
 
     const book = await Book.create({
        name,
@@ -24,7 +31,7 @@ const saveBook = async (req, res) => {
        image
     });
 
-    res.status(201).json({});
+    res.status(201).json(book);
 
 }
 
@@ -39,10 +46,14 @@ const findAllBooks = async (req,res) =>{
 const deleteBook = async (req,res) =>{
 
     const id = req.params.id;
+	
+	const image = await getImage(id);
 
     await Book.destroy({where:{id:id}});
 
-    res.status(200).json({message:'deleted'})
+    deleteImage(image.image);
+
+    res.status(200).json({message:'deleted',id});
 
 }
 
@@ -103,8 +114,29 @@ const updateBook = async (req,res) =>{
         res.status(404).json({message:"BOOK NOT FOUND!"});
         return;
     }
+
+    if(!name){
+        res.status(422).json({message:"Name is required!",error:true});
+        return;
+    }else if (!gender){
+        res.status(422).json({message:"Gender is required!",error:true});
+        return;
+    }else if (!quantity || quantity === 0){
+        res.status(422).json({message:"quantity must be more that 0!",error:true});
+        return;
+    }else if(!req.file){
+		res.status(422).json({message:"Image is required!",error:true});
+        return;
+    }
+
+    //get old image
+    const oldImage = await getImage(id);
+
+    const image = req.file.filename;
    
-    await Book.update({name,gender,quantity},{where:{id:id}});
+    await Book.update({name,gender,quantity,image},{where:{id:id}});
+
+    deleteImage(oldImage.image);
 
     res.status(200).json({message:"book been update!"});
 

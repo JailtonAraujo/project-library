@@ -29,14 +29,35 @@
     height: 500px;
 }
 
-.btn-delete{
-
+.btn_delete{
+    border: 1px solid #DC143C;
+    color: #FFF;
+    background-color: #DC143C;
 }
 
-.btn-update{
+/* .btn_delete:hover{
+    color: #FFF;
+    background-color: #DC143C;
+} */
 
+
+.btn_update{
+    border: 1px solid #191970;
+    color: #FFF;
+    background-color: #191970;
+}
+/* .btn_update:hover{
+    color: #FFF;
+    background-color: #191970;
+} */
+
+.btn_checkin{
+    color: #FFF;
+    border: 1px solid #4B0082;
+    background-color: #4B0082;
 }
 
-.btn-checkin{
-
-}
+/* .btn_checkin:hover{
+    color: #FFF;
+    background-color: #4B0082;
+} */

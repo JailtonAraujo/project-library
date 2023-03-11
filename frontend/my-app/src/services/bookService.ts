@@ -49,9 +49,23 @@ const newBook = async (bookData:any) =>{
             .then((res) => res.json())
             .catch((err)=>err);
 
-            console.log(data);
-
             return data;
+
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
+const deleteBook = async (id:number) =>{
+
+    try {
+        
+        const data = await fetch(`${bookEndPoint}/${id}`,{method:'DELETE'})
+            .then((res)=>res.json())
+            .catch((err)=>err);
+
+        return data;
 
     } catch (error) {
         console.log(error);
@@ -64,7 +78,8 @@ const newBook = async (bookData:any) =>{
 const bookService = {
     findAllBooks,
     findById,
-    newBook
+    newBook,
+    deleteBook
 }
 
 export default bookService;

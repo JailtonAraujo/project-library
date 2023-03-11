@@ -1,11 +1,15 @@
 const multer = require('multer');
 const path = require('path');
 
+//if has id and has no file it means that does not update book image
+
 //Destination to store image
 const imageStorage = multer.diskStorage({
     destination:'uploads/books',
     filename:(req, file, cb)=>{
-        cb(null, Date.now() + path.extname(file.originalname))
+        
+            cb(null, Date.now() + path.extname(file.originalname))
+        
     }
 });
 
@@ -17,7 +21,9 @@ const imageUpload = multer({
             //upload only png and jpg formats
             return cb(new Error("Por favor envie apenas PNG ou JPG!"))
         }
-        cb(undefined,true);
+        
+            cb(undefined,true);
+        
     }
 });
 

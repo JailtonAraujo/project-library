@@ -16,11 +16,11 @@ const { bookDateValid } = require('../middlewares/BookValidator');
 
 const validate = require('../middlewares/handlerValidator');
 
-router.post('/',bookDateValid(),validate,imageUpload.single('image'),saveBook);
+router.post('/',imageUpload.single('image'),saveBook);
 router.get('/', findAllBooks);
 router.get('/find/name',findByName);
 router.get('/find/gender',findByGender);
-router.patch('/update',bookDateValid,updateBook);
+router.patch('/update',imageUpload.single('image'),updateBook);
 router.delete('/:id',deleteBook);
 router.get('/:id',findById);
 

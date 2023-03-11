@@ -1,11 +1,16 @@
 import style from './BookDetails.module.css';
 
+import 'react-toastify/dist/ReactToastify.css';
+
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { environment } from '../../environments';
 
-import { finBookById } from '../../slices/bookSlice';
+import { useNavigate } from 'react-router-dom';
+
+//slices
+import { finBookById,deleteBook } from '../../slices/bookSlice';
 
 const uploads = environment.uploads;
 
@@ -15,21 +20,36 @@ const BookDetails = () => {
 
     const dispath = useDispatch<any>();
 
+    const navigate = useNavigate();
+
     const { book, loading } = useSelector((state: any) => state.book);
 
     useEffect(() => {
 
         dispath(finBookById(Number(id)));
 
-    }, [id])
+    }, [id]);
+
+    const handleDelete = () =>{
+
+        //to do
+        //Check in backend if book are in pending check 
+
+        if( window.confirm(`Tem certeza que deseja deletar o livro ${book.name} ?`) ){
+            dispath(deleteBook(Number(id))); 
+            
+            navigate('/acervo');
+        }
+
+    } 
 
     return (
         <div className='container-main'>
             <div className={style.container_details}>
             <div className={style.options}>
-                        <button className='btn'>Excluir</button>
-                        <button className='btn' >Atualizar</button>
-                        <button className='btn'>Realizar Emprestimo</button>
+                        <button className={`btn ${style.btn_delete}`} onClick={handleDelete} >Excluir</button>
+                        <button className={`btn ${style.btn_update}`} >Atualizar</button>
+                        <button className={`btn ${style.btn_checkin}`}>Realizar Emprestimo</button>
                     </div>
                 <div className={style.content_details}>
                     <div className={style.book_details}>

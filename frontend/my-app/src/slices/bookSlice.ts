@@ -1,11 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Book } from "../interfaces/Book";
+
+//hooks
+import { notify } from '../hooks/useToast';
 
 import bookService from "../services/bookService";
 
 const initialState = {
     book:{},
-    books:[],
+    books:[] as any,
     loading:false,
     error:false,
     success:true,
@@ -41,8 +43,22 @@ export const newBook = createAsyncThunk(
         const data = await bookService.newBook(book);
 
         if(data.error){
-            thunkApi.rejectWithValue(data);
-            return;
+            return thunkApi.rejectWithValue(data);
+        }
+
+        return data;
+
+    }
+)
+
+export const deleteBook = createAsyncThunk(
+    "book/delete",
+    async(id:number,thunkApi)=>{
+
+        const data = await bookService.deleteBook(id);
+
+        if(data.error){
+            return thunkApi.rejectWithValue(data);
         }
 
         return data;
@@ -84,14 +100,30 @@ export const bookSlice = createSlice({
 
         .addCase(newBook.pending,(state)=>{
             state.loading=true;
-        }).addCase(newBook.fulfilled,(state,action)=>{
-            state.book = action.payload;
+        }).addCase(newBook.fulfilled,(state,action:any)=>{
+            state.books.push(action.payload); 
             state.loading = false;
+            notify('Livro cadastrado com sucesso!','success');
         }).addCase(newBook.rejected,(state,action:any)=>{
             state.book = {};
             state.loading = false;
             state.error = true;
             state.success = false;
+            notify(`error: ${action.payload.message}`,'error');
+            state.message = action.payload.message
+        })
+
+        .addCase(deleteBook.pending,(state)=>{
+            state.loading=true;
+        }).addCase(deleteBook.fulfilled,(state,action)=>{
+            state.loading = false;
+            state.books = state.books.filter((element:any)=> element.id !== action.payload.id);
+            notify('Livro deletado com sucesso!','success');
+        }).addCase(deleteBook.rejected,(state,action:any)=>{
+            state.loading = false;
+            state.error = true;
+            state.success = false;
+            notify(`error: ${action.payload.message}`,'error');
             state.message = action.payload.message
         })
 

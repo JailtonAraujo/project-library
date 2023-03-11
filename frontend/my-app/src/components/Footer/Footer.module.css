@@ -1,0 +1,9 @@
+.footer{
+    min-height: 8vh;
+    width: 100%;
+    border-top: 2px solid #C71585;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5em;
+}

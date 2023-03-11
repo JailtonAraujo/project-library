@@ -1,7 +1,5 @@
 import style from './Acervo.module.css'
 
-import { environment } from '../../environments';
-
 import {findAllBooks} from "../../slices/bookSlice";
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from "react";
@@ -10,8 +8,6 @@ import { Book } from "../../interfaces/Book";
 //componets
 import CardBook from '../../components/cardBook/CardBook';
 import { NavLink } from 'react-router-dom';
-
-const uploads = environment.uploads;
 
 const Acervo = () =>{
 
@@ -34,7 +30,7 @@ const Acervo = () =>{
                 </div>
                 <ul className={style.list_books}>
                     {books && books.map((book:Book)=>(
-                    <div key={book.gender}>
+                    <div key={book.id}>
                         <CardBook 
                             gender={book.gender} 
                             image={book.image} 

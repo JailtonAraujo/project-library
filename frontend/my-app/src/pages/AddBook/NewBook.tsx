@@ -6,10 +6,13 @@ import BookForm from "../../components/BookForm/BookForm"
 import { newBook } from '../../slices/bookSlice';
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const NewBook = () => {
 
   const dispath = useDispatch<any>();
+
+  const navigate = useNavigate();
 
   const [book ,setBook] = useState(null);
 
@@ -26,14 +29,12 @@ const NewBook = () => {
 
       dispath(newBook(formDate));
 
+      navigate('/acervo')
+
     }
 
-  },[book])
+  },[book,dispath,navigate])
 
-
-  const handleSubmit = (e:any) =>{
-
-  }
 
   return (
     <div className='container-main'>

@@ -32,4 +32,14 @@ const bookExists = async (id) =>{
 
 }
 
-module.exports = {Book, bookExists};
+const getImage = async (id) => {
+
+    const sql = `SELECT image FROM tbl_books WHERE id = ${id}`;
+
+    const result = await db.query(sql,{plain:true});
+
+    return result;
+
+}
+
+module.exports = {Book, bookExists, getImage};

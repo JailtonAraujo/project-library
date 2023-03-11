@@ -3,7 +3,7 @@
 
 .container-main{
     width: 100%;
-    height: 90vh;
+    min-height: 90vh;
 }
 
 .active{
@@ -13,15 +13,14 @@
 .btn{
     border-radius: 5px;
     border: 1px solid #C71585;
-    color: #C71585;
+    background-color: #C71585;
+    color: #FFF;
     font-size: 1em;
     padding: 0.3em 0.5em;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.3s;
 }
 
 .btn:hover{
-    background-color: #C71585;
-    color: #FFF;
+   transform: scale(1.02);
 }
