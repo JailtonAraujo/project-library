@@ -6,16 +6,16 @@ const saveBook = async (req, res) => {
     const { name, gender, quantity } = req.body;
     const image = req.file.filename;
 
-    if(!name){
-        res.status(422).json({message:"Name is required!"});
-        return;
-    }else if (!gender){
-        res.status(422).json({message:"Gender is required!"});
-        return;
-    }else if (!quantity || quantity === 0){
-        res.status(422).json({message:"quantity must be more that 0!"});
-        return;
-    }
+    // if(!name){
+    //     res.status(422).json({message:"Name is required!"});
+    //     return;
+    // }else if (!gender){
+    //     res.status(422).json({message:"Gender is required!"});
+    //     return;
+    // }else if (!quantity || quantity === 0){
+    //     res.status(422).json({message:"quantity must be more that 0!"});
+    //     return;
+    // }
 
     const book = await Book.create({
        name,
@@ -24,7 +24,7 @@ const saveBook = async (req, res) => {
        image
     });
 
-    res.status(201).json(book);
+    res.status(201).json({});
 
 }
 

@@ -1,0 +1,42 @@
+.container_details{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 3em;
+}
+
+.content_details{
+    padding: 2em;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    border-radius: 5px;
+   
+}
+
+.options{
+    margin-bottom: 1em;
+    display: flex;
+    gap: 1em;
+}
+
+.book_details{
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.book_details img{
+    width: 340px;
+    height: 500px;
+}
+
+.btn-delete{
+
+}
+
+.btn-update{
+
+}
+
+.btn-checkin{
+
+}

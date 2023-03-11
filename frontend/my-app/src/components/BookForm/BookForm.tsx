@@ -6,7 +6,8 @@ import { environment } from '../../environments';
 
 export interface FomrBookProps {
     book?:Book,
-    btnLabel:string
+    btnLabel:string,
+    setBook:any
 }
 
 const uploads = environment.uploads;
@@ -34,7 +35,7 @@ const BookForm = (props:FomrBookProps) => {
             id
         }
 
-        console.log(book);
+        props.setBook(book);
 
     }
 

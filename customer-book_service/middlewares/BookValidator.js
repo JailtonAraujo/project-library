@@ -1,21 +1,37 @@
+const  { body } = require('express-validator')
 
+const bookDateValid = () => {
 
-const bookDateValid = async (req,res,next) => {
+    return [
 
-    const { name, gender, quantity } = req.body;
+        body("name")
+        .isString().withMessage("Name is required.")
+        .isLength({min:3})
+            .withMessage("O nome precisa ter no menino 3 caracteres!"),
 
-    if(!name){
-        res.status(422).json({message:"Name is required!"});
-        return;
-    }else if (!gender){
-        res.status(422).json({message:"Gender is required!"});
-        return;
-    }else if (!quantity || quantity === 0){
-        res.status(422).json({message:"quantity must be more that 0!"});
-        return;
-    }
+        body("gender")
+        .isString().withMessage("gender is required."),
 
-     next();   
+        body("quantity")
+        .isNumeric().withMessage('Quantity is required')
+        .custom((value,{req})=>{
+            if(req.body.quantity === 0 ){
+                throw new Error("Quantity must be more that 0!");
+            }
+            return true
+        }),
+
+        body("image")
+        .custom((value,{req})=>{
+            if(!req.file){
+                throw new Error("A imagem é obrigatoria!");
+            }
+            return true;
+        })
+
+    ];
+
+    
 
 }
 

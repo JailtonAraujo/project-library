@@ -1,37 +1,49 @@
 import style from './BookDetails.module.css';
 
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { environment } from '../../environments';
+
+import { finBookById } from '../../slices/bookSlice';
 
 const uploads = environment.uploads;
 
 const BookDetails = () => {
 
-    const {id} = useParams();
+    const { id } = useParams();
 
-    const { book, loading} = useSelector((state:any)=> state.book);
+    const dispath = useDispatch<any>();
 
-    useEffect(()=>{
+    const { book, loading } = useSelector((state: any) => state.book);
 
-    },[id])
+    useEffect(() => {
 
-  return (
-    <div className='conatainer-main'>
-        <div className="content">
-            <div className="options"></div>
-            <div className="book-details">
-                <img src='' alt="img_book"/>
-                <div className="info-book">
-                    <p>Nome</p>
-                    <p>Gender</p>
-                    <p>Quantity</p>
+        dispath(finBookById(Number(id)));
+
+    }, [id])
+
+    return (
+        <div className='container-main'>
+            <div className={style.container_details}>
+            <div className={style.options}>
+                        <button className='btn'>Excluir</button>
+                        <button className='btn' >Atualizar</button>
+                        <button className='btn'>Realizar Emprestimo</button>
+                    </div>
+                <div className={style.content_details}>
+                    <div className={style.book_details}>
+                        <img src={`${uploads}/books/${book.image}`} alt="img_book" />
+                        <div className={style.info_book}>
+                            <p>Nome: {book.name}</p>
+                            <p>Genêro: {book.gender}</p>
+                            <p>Quantidade: {book.quantity}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-  )
+    )
 }
 
 export default BookDetails
