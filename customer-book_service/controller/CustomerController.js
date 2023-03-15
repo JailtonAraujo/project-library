@@ -29,7 +29,7 @@ const deleteCustomer = async (req,res) =>{
 
     await Customer.destroy({where:{id:id}});
 
-    res.status(200).json({message:'custumer been deleted!'});
+    res.status(200).json({message:'custumer been deleted!',id:id});
 
 }
 
@@ -40,6 +40,18 @@ const findByName = async (req, res) =>{
     const customers = await Customer.findAll({where:{name:{[Op.like]:`${nameSearch}%`}}});
 
     res.status(200).json(customers);
+
+}
+
+const findById = async (req, res) =>{
+
+    const id = req.params.id;
+
+    console.log(id)
+
+    const customer = await Customer.findOne({where:{id:id}});
+
+    res.status(200).json(customer);
 
 }
 
@@ -71,7 +83,8 @@ const CustomerController = {
     findAllCustomer,
     deleteCustomer,
     findByName,
-    update
+    update,
+	findById
 }
 
 module.exports = CustomerController;

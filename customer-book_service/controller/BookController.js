@@ -106,7 +106,7 @@ const findByGender = async (req,res) =>{
 
 const updateBook = async (req,res) =>{
 
-    const {name,gender,quantity, id} = req.body;
+    const {name,gender,quantity, id, image} = req.body;
 
     const exists = await bookExists(id);
     
@@ -124,19 +124,27 @@ const updateBook = async (req,res) =>{
     }else if (!quantity || quantity === 0){
         res.status(422).json({message:"quantity must be more that 0!",error:true});
         return;
-    }else if(!req.file){
-		res.status(422).json({message:"Image is required!",error:true});
-        return;
     }
-
+    
+    let newImage ='';
     //get old image
     const oldImage = await getImage(id);
 
-    const image = req.file.filename;
-   
-    await Book.update({name,gender,quantity,image},{where:{id:id}});
+    //if user not send a new image, not change current image
+    if(!req.file){
+        newImage = oldImage.image;
+    }else {
+        newImage = req.file.filename;
+    }
 
-    deleteImage(oldImage.image);
+    console.log(newImage);
+   
+    await Book.update({name,gender,quantity,image:newImage},{where:{id:id}});
+
+    //delete old image if was send a new image 
+   if(oldImage.image.toString() !== newImage.toString()){
+        deleteImage(oldImage.image);
+   }
 
     res.status(200).json({message:"book been update!"});
 

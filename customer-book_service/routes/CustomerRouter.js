@@ -5,6 +5,7 @@ const {
     findAllCustomer,
     deleteCustomer,
     findByName,
+	findById,
     update
 } = require('../controller/CustomerController');
 
@@ -17,5 +18,6 @@ router.get('/',findAllCustomer);
 router.patch('/update',CustomerDataValid,update);
 router.delete('/:id',deleteCustomer);
 router.get('/search/name',findByName);
+router.get('/:id',findById);
 
 module.exports=router
