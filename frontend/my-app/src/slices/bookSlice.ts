@@ -30,7 +30,7 @@ export const finBookById = createAsyncThunk(
     async (id:number) =>{
 
         const data = await bookService.findById(Number(id));
-
+        
         return data;
 
     }
@@ -41,6 +41,21 @@ export const newBook = createAsyncThunk(
     async (book:any, thunkApi)=>{
 
         const data = await bookService.newBook(book);
+
+        if(data.error){
+            return thunkApi.rejectWithValue(data);
+        }
+
+        return data;
+
+    }
+)
+
+export const updateBook = createAsyncThunk(
+    "book/update",
+    async (book:any, thunkApi)=>{
+
+        const data = await bookService.updateBook(book);
 
         if(data.error){
             return thunkApi.rejectWithValue(data);
@@ -120,6 +135,21 @@ export const bookSlice = createSlice({
             state.books = state.books.filter((element:any)=> element.id !== action.payload.id);
             notify('Livro deletado com sucesso!','success');
         }).addCase(deleteBook.rejected,(state,action:any)=>{
+            state.loading = false;
+            state.error = true;
+            state.success = false;
+            notify(`error: ${action.payload.message}`,'error');
+            state.message = action.payload.message
+        })
+
+        .addCase(updateBook.pending,(state)=>{
+            state.loading=true;
+        }).addCase(updateBook.fulfilled,(state,action:any)=>{
+            state.books.push(action.payload); 
+            state.loading = false;
+            notify('Livro atualizado com sucesso!','success');
+        }).addCase(updateBook.rejected,(state,action:any)=>{
+            state.book = {};
             state.loading = false;
             state.error = true;
             state.success = false;

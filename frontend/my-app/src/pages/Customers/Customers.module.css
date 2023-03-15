@@ -1,0 +1,57 @@
+.list_customers{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3em 0.7em;
+}
+
+.title{
+    padding-bottom: 3em;
+}
+
+.options{
+    width: 800px;
+    margin-bottom: 0.8em;
+}
+
+.content_tbl{
+    width: 800px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 5px;
+    padding: 0.7em 0.4em;
+}
+
+.content_tbl .header_tbl{
+    display: flex;
+    justify-content: space-between;
+    padding: 1em;
+    border-bottom: 2px solid #000;
+}
+
+.content_tbl .row_tbl{
+    display: flex;
+    justify-content: space-around;
+    padding: 0.7em;
+    border-bottom: 1px solid #CCC;
+}
+
+li,span{
+    text-align: start;
+    list-style: none;
+    width: 100%;
+    margin-left: 0.4em;
+    display: flex;
+    align-items: center;
+}
+
+.tbl_actions img{
+    width: 20px;
+}
+
+.tbl_actions a, button{
+    cursor: pointer;
+    border: none;
+    margin-right: 1.2em;
+
+}

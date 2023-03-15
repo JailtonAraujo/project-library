@@ -73,13 +73,35 @@ const deleteBook = async (id:number) =>{
 
 }
 
+const updateBook = async (bookData:any) =>{
+
+    const config ={
+        method:'PATCH',
+        body:bookData,
+        headers:{}
+    }
+
+    try {
+        
+        const data = await fetch(`${bookEndPoint}/update`,config)
+            .then((res)=>res.json())
+            .catch((err)=>err);
+
+            return data
+
+    } catch (error) {
+        console.log(error);
+    }
+
+}
 
 
 const bookService = {
     findAllBooks,
     findById,
     newBook,
-    deleteBook
+    deleteBook,
+    updateBook
 }
 
 export default bookService;

@@ -7,7 +7,7 @@ import { environment } from '../../environments';
 export interface FomrBookProps {
     book?:Book,
     btnLabel:string,
-    setBook:any
+    handleSubmit:any
 }
 
 const uploads = environment.uploads;
@@ -23,7 +23,7 @@ const BookForm = (props:FomrBookProps) => {
     const [image, setImage] = useState(book ? book.image : "");
     const [previwImage, setPreviwImage] = useState();
 
-    const handleSubmit = (e:any) =>{
+    const dataEmitter = (e:any) =>{
 
         e.preventDefault();
 
@@ -35,7 +35,7 @@ const BookForm = (props:FomrBookProps) => {
             id
         }
 
-        props.setBook(book);
+        props.handleSubmit(book);
 
     }
 
@@ -51,7 +51,7 @@ const BookForm = (props:FomrBookProps) => {
 
   return (
     <div className='book-form'>
-        <form className='form-control' onSubmit={handleSubmit} >
+        <form className='form-control' onSubmit={dataEmitter} >
 
            
                 <label className="form-group">

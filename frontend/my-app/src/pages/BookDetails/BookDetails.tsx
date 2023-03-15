@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { environment } from '../../environments';
 
 import { useNavigate } from 'react-router-dom';
@@ -48,7 +48,7 @@ const BookDetails = () => {
             <div className={style.container_details}>
             <div className={style.options}>
                         <button className={`btn ${style.btn_delete}`} onClick={handleDelete} >Excluir</button>
-                        <button className={`btn ${style.btn_update}`} >Atualizar</button>
+                        <NavLink className={`btn ${style.btn_update}`} to={`/book/update/${id}`} >Atualizar</NavLink>
                         <button className={`btn ${style.btn_checkin}`}>Realizar Emprestimo</button>
                     </div>
                 <div className={style.content_details}>
