@@ -12,6 +12,7 @@ import UpdateBook from './pages/UpdateBook/UpdateBook';
 import Customers from './pages/Customers/Customers';
 import AddCustomer from './pages/AddCustomer/AddCustomer';
 import UpdateCustomer from './pages/UpdateCustomer/UpdateCustomer';
+import CheckIn from './pages/CheckIn/CheckIn';
 
 //hooks
 import { ToastContainer } from './hooks/useToast';
@@ -30,6 +31,8 @@ function App() {
             <Route path='/customers/new' element={<AddCustomer/>} />
 
             <Route path='/book/new' element={<NewBook/>} />
+
+            <Route path='/book/checkin/:id' element={<CheckIn/>} />
 
             <Route path='/customers/update/:id' element={<UpdateCustomer/>} />
 

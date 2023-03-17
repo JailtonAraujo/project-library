@@ -67,12 +67,14 @@ const update = async (req, res) =>{
         return;
     }
 
-    await Customer.update({
+     await Customer.update({
         name,
         email
     },{where:{id:id}});
+	
+	const customer = await Customer.findOne({where:{id:id}});
 
-    res.status(201).json({message:'Customer been update'});
+    res.status(201).json({message:'Customer been update',customer});
 
 }
 

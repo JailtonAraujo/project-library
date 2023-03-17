@@ -14,9 +14,11 @@
 }
 
 .options{
+    width: 340px;
     margin-bottom: 1em;
     display: flex;
     gap: 1em;
+    justify-content: space-between;
 }
 
 .book_details{

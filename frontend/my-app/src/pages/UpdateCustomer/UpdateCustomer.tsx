@@ -3,14 +3,14 @@ import style from './UpdateCustomer.module.css';
 import { Customer } from '../../interfaces/Customer';
 
 //slices
-import { finfById } from '../../slices/customerSlice';
+import { finfById,updateCustomer } from '../../slices/customerSlice';
 
 //components
 import CustomerForm from '../../components/CustomerForm/CustomerForm';
 
 //hooks
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 const UpdateCustomer = () => {
@@ -19,7 +19,9 @@ const UpdateCustomer = () => {
 
     const dispath = useDispatch<any>();
 
-    const { customer } = useSelector((state:any)=> state.customer);
+    const navigate = useNavigate();
+
+    const { customer,success } = useSelector((state:any)=> state.customer);
 
 
     useEffect(()=>{
@@ -32,6 +34,10 @@ const UpdateCustomer = () => {
 
     const handleSubmit = (customer:Customer) =>{
 
+     dispath(updateCustomer(customer));
+
+      navigate('/customers')
+
     }
 
   return (
@@ -39,7 +45,9 @@ const UpdateCustomer = () => {
         <div className={style.container_updatecustomer}>
             <div className={style.title}><h1>Cadastrar cliente</h1></div>
             <div className={style.content}>
-                <CustomerForm btnLabel="Atualizar" handleSubmit={handleSubmit}/>
+              {customer.id && 
+                 <CustomerForm btnLabel="Atualizar" handleSubmit={handleSubmit} customer={customer}/>
+              }
               </div>
         </div>
     </div>

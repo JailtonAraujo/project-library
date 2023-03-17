@@ -20,4 +20,14 @@ public class ExceptionResponse implements Serializable {
 
     private int status;
 
+    private boolean error;
+
+    public ExceptionResponse(Date timestamp, String message, String details, int status){
+        this.timestamp = timestamp;
+        this.message = message;
+        this.details = details;
+        this.status = status;
+        this.error = true;
+    }
+
 }

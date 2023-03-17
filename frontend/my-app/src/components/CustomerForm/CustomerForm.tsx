@@ -9,8 +9,8 @@ export interface CustomerProps {
 
 const CustomerForm = (props:CustomerProps) => {
 
-  const customer =props.customer;
 
+  const [customer, setCustomer] = useState(props.customer ? props.customer : null);
   const [id, setId] = useState(customer ? customer.id : 0);
   const [name, setName] = useState(customer ? customer.name : '');
   const [email, setEmail] = useState(customer ? customer.email : '');

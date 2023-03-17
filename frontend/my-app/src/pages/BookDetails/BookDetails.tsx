@@ -49,7 +49,7 @@ const BookDetails = () => {
             <div className={style.options}>
                         <button className={`btn ${style.btn_delete}`} onClick={handleDelete} >Excluir</button>
                         <NavLink className={`btn ${style.btn_update}`} to={`/book/update/${id}`} >Atualizar</NavLink>
-                        <button className={`btn ${style.btn_checkin}`}>Realizar Emprestimo</button>
+                        <NavLink className={`btn ${style.btn_checkin}`} to={`/book/checkin/${id}`} >Alugar</NavLink>
                     </div>
                 <div className={style.content_details}>
                     <div className={style.book_details}>

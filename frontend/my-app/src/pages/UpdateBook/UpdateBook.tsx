@@ -26,7 +26,7 @@ const UpdateBook = () => {
         if(id){
             dispath(finBookById(Number(id)));
         }
-    },[id]);
+    },[id,dispath]);
 
     const handleSubmit = (book:any) =>{
 
