@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/checkin")
@@ -25,5 +28,20 @@ public class CheckControllerImpl implements CheckInController {
         checkInService.createCheckIn(checkIn);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @Override
+    public ResponseEntity<List<CheckIn>> getAll() {
+        return ResponseEntity.ok(checkInService.getAllCheckIn());
+    }
+
+    @Override
+    public ResponseEntity<List<CheckIn>> getAllByCustomerName(String name) {
+        return ResponseEntity.ok(checkInService.getAllByUserName(name));
+    }
+
+    @Override
+    public ResponseEntity<List<CheckIn>> getAllByDateInterval(LocalDate initialDate, LocalDate finalDate) {
+        return ResponseEntity.ok(checkInService.getAllByDateInterval(initialDate,finalDate));
     }
 }

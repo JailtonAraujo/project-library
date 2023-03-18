@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.NoResultException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Log4j2
@@ -113,5 +114,20 @@ public class CheckInServiceImpl implements CheckInService {
 //        kafkaTemplate.send("checkin-topic",orderCreated);
 
         return checkInCreated;
+    }
+
+    @Override
+    public List<CheckIn> getAllCheckIn() {
+        return checkInRepository.getAll();
+    }
+
+    @Override
+    public List<CheckIn> getAllByUserName(String name) {
+        return checkInRepository.getAllByUserName(name);
+    }
+
+    @Override
+    public List<CheckIn> getAllByDateInterval(LocalDate initialDate, LocalDate finalDate) {
+        return checkInRepository.getAllByDateInterval(initialDate,finalDate);
     }
 }
