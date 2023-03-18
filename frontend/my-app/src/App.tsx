@@ -4,15 +4,16 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 //components
 import NavBar from './components/Navbar/Navbar';
-import Acervo from './pages/Acervo/Acervo';
-import NewBook from './pages/AddBook/NewBook';
-import BookDetails from './pages/BookDetails/BookDetails';
+import Acervo from './pages/Book/Acervo/Acervo';
+import NewBook from './pages/Book/AddBook/NewBook';
+import BookDetails from './pages/Book/BookDetails/BookDetails';
 import Footer from './components/Footer/Footer';
-import UpdateBook from './pages/UpdateBook/UpdateBook';
-import Customers from './pages/Customers/Customers';
-import AddCustomer from './pages/AddCustomer/AddCustomer';
+import UpdateBook from './pages/Book/UpdateBook/UpdateBook';
+import Customers from './pages/Customer/Customers/Customers';
+import AddCustomer from './pages/Customer/AddCustomer/AddCustomer';
 import UpdateCustomer from './pages/UpdateCustomer/UpdateCustomer';
-import CheckIn from './pages/CheckIn/CheckIn';
+import NewCheckIn from './pages/CheckIn/NewCheckIn/NewCheckIn';
+import CheckInList from './pages/CheckIn/CheckInList/CheckInList';
 
 //hooks
 import { ToastContainer } from './hooks/useToast';
@@ -26,19 +27,21 @@ function App() {
         <Routes>
             <Route path='/' element={<Acervo/>} />
 
-            <Route path='/customers' element={<Customers/>} />
-
-            <Route path='/customers/new' element={<AddCustomer/>} />
-
             <Route path='/book/new' element={<NewBook/>} />
 
-            <Route path='/book/checkin/:id' element={<CheckIn/>} />
-
-            <Route path='/customers/update/:id' element={<UpdateCustomer/>} />
+            <Route path='/book/checkin/:id' element={<NewCheckIn/>} />
 
             <Route path='/book/details/:id' element={<BookDetails/>} />
 
             <Route path='book/update/:id' element={<UpdateBook/>}/>
+
+            <Route path='/customers' element={<Customers/>} />
+
+            <Route path='/customers/new' element={<AddCustomer/>} />
+
+            <Route path='/customers/update/:id' element={<UpdateCustomer/>} />
+
+            <Route path='/checkin' element={<CheckInList/>} />
 
         </Routes>
         <Footer/>

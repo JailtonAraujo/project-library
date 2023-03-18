@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-import { Book } from '../../interfaces/Book';
+import { Book } from '../../../interfaces/Book';
 
 //Components
-import BookForm from "../../components/BookForm/BookForm"
+import BookForm from "../../../components/BookForm/BookForm"
 
 //Slices
-import {finBookById, updateBook} from '../../slices/bookSlice';
+import {finBookById, updateBook} from '../../../slices/bookSlice';
 
 const UpdateBook = () => {
 

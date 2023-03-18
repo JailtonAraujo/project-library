@@ -1,14 +1,14 @@
 import style  from "./AddCustomer.module.css";
 
 //components
-import CustomerForm from "../../components/CustomerForm/CustomerForm"
+import CustomerForm from "../../../components/CustomerForm/CustomerForm"
 
 //hooks
-import { Customer } from "../../interfaces/Customer";
+import { Customer } from "../../../interfaces/Customer";
 import { useDispatch } from "react-redux";
 
 //slices
-import { newCustomer } from '../../slices/customerSlice';
+import { newCustomer } from '../../../slices/customerSlice';
 import { useNavigate } from "react-router-dom";
 
 const AddCustomer = () => {

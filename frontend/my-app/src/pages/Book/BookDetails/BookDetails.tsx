@@ -5,12 +5,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
-import { environment } from '../../environments';
+import { environment } from '../../../environments';
 
 import { useNavigate } from 'react-router-dom';
 
 //slices
-import { finBookById,deleteBook } from '../../slices/bookSlice';
+import { finBookById,deleteBook } from '../../../slices/bookSlice';
 
 const uploads = environment.uploads;
 

@@ -1,9 +1,9 @@
 import style from './NewBook.module.css'
 
 //components
-import BookForm from "../../components/BookForm/BookForm"
+import BookForm from "../../../components/BookForm/BookForm"
 
-import { newBook } from '../../slices/bookSlice';
+import { newBook } from '../../../slices/bookSlice';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';

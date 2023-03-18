@@ -1,7 +1,7 @@
-import style from './CheckIn.module.css';
+import style from './NewCheckIn.module.css';
 
 //components
-import CardBook from '../../components/cardBook/CardBook';
+import CardBook from '../../../components/cardBook/CardBook';
 
 //hooks
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,16 +9,16 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 //slices
-import { finBookById } from '../../slices/bookSlice';
-import { finfByName } from '../../slices/customerSlice';
-import { checkIn } from '../../slices/checkInSlice';
+import { finBookById } from '../../../slices/bookSlice';
+import { finfByName } from '../../../slices/customerSlice';
+import { checkIn } from '../../../slices/checkInSlice';
 
 //icons
 import { FcSearch } from 'react-icons/fc';
-import { Customer } from '../../interfaces/Customer';
-import { Checkin } from '../../interfaces/CheckIn';
+import { Customer } from '../../../interfaces/Customer';
+import { Checkin } from '../../../interfaces/CheckIn';
 
-const CheckIn = () => {
+const NewCheckIn = () => {
 
     const [nameSearch, setNameSearch] = useState('');
 
@@ -115,4 +115,4 @@ const CheckIn = () => {
   )
 }
 
-export default CheckIn
+export default NewCheckIn

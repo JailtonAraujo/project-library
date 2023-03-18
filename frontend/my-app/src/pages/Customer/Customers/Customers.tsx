@@ -4,12 +4,12 @@ import style from './Customers.module.css';
 import { NavLink } from 'react-router-dom';
 
 //slices
-import { getAll, deleteCustomer } from '../../slices/customerSlice';
+import { getAll, deleteCustomer } from '../../../slices/customerSlice';
 
 //hooks
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Customer } from '../../interfaces/Customer';
+import { Customer } from '../../../interfaces/Customer';
 
 const Customers = () => {
 

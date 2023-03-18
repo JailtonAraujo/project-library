@@ -1,12 +1,12 @@
 import style from './Acervo.module.css'
 
-import {findAllBooks} from "../../slices/bookSlice";
+import {findAllBooks} from "../../../slices/bookSlice";
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from "react";
-import { Book } from "../../interfaces/Book";
+import { Book } from "../../../interfaces/Book";
 
 //componets
-import CardBook from '../../components/cardBook/CardBook';
+import CardBook from '../../../components/cardBook/CardBook';
 import { NavLink } from 'react-router-dom';
 
 const Acervo = () =>{
