@@ -21,4 +21,6 @@ public class Book implements Serializable {
 
     private String gender;
 
+    private String image;
+
 }

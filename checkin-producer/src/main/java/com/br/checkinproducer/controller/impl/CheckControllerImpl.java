@@ -23,11 +23,9 @@ public class CheckControllerImpl implements CheckInController {
     private final CheckInService checkInService;
 
     @Override
-    public ResponseEntity<CheckIn> checkIn(CheckIn checkIn) throws PendingCheckIngException {
+    public ResponseEntity<CheckIn> checkIn(CheckIn checkIn) throws PendingCheckIngException {;
 
-        checkInService.createCheckIn(checkIn);
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(checkInService.createCheckIn(checkIn));
     }
 
     @Override

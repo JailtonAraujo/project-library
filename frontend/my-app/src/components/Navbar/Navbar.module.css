@@ -1,10 +1,10 @@
 .navbar{
-    width: 100;
+    width: 100%;
     border-bottom: 2px solid #C71585;
 }
 
-.content-nav{
-    width: 100;
+.content_nav{
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;

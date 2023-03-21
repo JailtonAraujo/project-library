@@ -33,8 +33,28 @@ const createCheckIn = async (checkIn:Checkin) =>{
     }   
 }
 
+
+const findAll = async () => {
+    
+    try {
+        
+        const data = await fetch(`${checkInBaseUrl}/`)
+            .then((res)=>res.json())
+            .catch((err)=>err);
+
+        return data;
+
+    } catch (error) {
+        console.log(error);
+    }
+    
+}
+
+
+
 const checkInService = {
-    createCheckIn
+    createCheckIn,
+    findAll
 }
 
 export default checkInService;

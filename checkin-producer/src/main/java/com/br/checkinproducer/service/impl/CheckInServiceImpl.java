@@ -76,7 +76,7 @@ public class CheckInServiceImpl implements CheckInService {
 
         if(!optional.isEmpty() && optional.isPresent()){
             if(optional.get().equalsIgnoreCase(States.PENDING.toString())){
-                throw new PendingCheckIngException("you have a pending order!");
+                throw new PendingCheckIngException("you already have a pending order with this book!");
             } else if (optional.get().equalsIgnoreCase(States.LATE.toString())) {
                 throw new PendingCheckIngException("you have a late order!");
             }

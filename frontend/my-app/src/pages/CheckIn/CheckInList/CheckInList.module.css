@@ -46,3 +46,59 @@
 .late{
     color: red;
 }
+
+.modal_content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1em;
+}
+
+.details_checkin{
+    width: 86%;
+    margin-right: 2em;
+}
+
+.book_info img{
+    width: 175px;
+}
+
+
+.search_container{
+   
+}
+
+.search_container select{
+    border-radius: 5px;
+    padding: 0.2em;
+    outline: none;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.search_field{
+    border: 1px solid #CCC;
+    width: 410px;
+    margin-bottom: 2em;
+    position: relative;
+    border-radius: 5px;
+    border: 2px solid #CCC;
+    padding-right: 2.3em;
+}
+
+.search_field input{
+    border: none;
+    font-size: 1em;
+    padding: 0.4em 0.4em;
+    outline: none;
+    width: 100%;
+}
+
+.search_field button{
+    position: absolute;
+    font-size: 1.6em;
+    background: none;
+    margin: 0;
+    padding: 0em 0.2em;
+    top: 3px;
+}

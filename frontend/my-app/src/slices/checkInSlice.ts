@@ -30,6 +30,15 @@ export const checkIn = createAsyncThunk(
     }
 )
 
+export const findAll = createAsyncThunk(
+    "checkIn/findAll",
+    async () =>{
+        const data = await checkInService.findAll();
+       
+        return data;
+    }
+)
+
 
 export const checkInSlice = createSlice({
     name: 'customer',
@@ -57,6 +66,13 @@ export const checkInSlice = createSlice({
             state.success = false;
             state.message = `Erro - ${action.payload}`;
             notify(`Erro - ${action.payload.message}`,'error');
+        })
+
+        .addCase(findAll.pending,(state)=>{
+            state.loading=true;
+        }).addCase(findAll.fulfilled,(state,action:any)=>{
+            state.loading = false;
+            state.checkInList = action.payload;
         })
 
     }
