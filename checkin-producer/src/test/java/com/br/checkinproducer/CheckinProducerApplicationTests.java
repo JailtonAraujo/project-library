@@ -18,9 +18,7 @@ class CheckinProducerApplicationTests {
 	@Test
 	void getAllByUserNameTest (){
 
-		List<CheckIn> list = checkInRepository.getAllByUserName("jaiton");
 
-		System.out.println(list);
 
 	}
 

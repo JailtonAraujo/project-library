@@ -5,11 +5,16 @@ import com.br.checkinproducer.model.Book;
 import com.br.checkinproducer.model.CheckIn;
 import com.br.checkinproducer.model.States;
 import com.br.checkinproducer.repository.BookRepository;
+import com.br.checkinproducer.repository.CheckInCustomRepository;
 import com.br.checkinproducer.repository.CustomerRepository;
 import com.br.checkinproducer.repository.CheckInRepository;
 import com.br.checkinproducer.service.CheckInService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +34,8 @@ public class CheckInServiceImpl implements CheckInService {
     private final CustomerRepository customerRepository;
 
     private final CheckInRepository checkInRepository;
+
+    private final CheckInCustomRepository checkInCustomRepository;
 
 //    private final KafkaTemplate<String, Serializable> kafkaTemplate;
 
@@ -117,17 +124,20 @@ public class CheckInServiceImpl implements CheckInService {
     }
 
     @Override
-    public List<CheckIn> getAllCheckIn() {
-        return checkInRepository.getAll();
+    public Page<CheckIn> getAllCheckIn(Integer offset)  {
+
+        return checkInCustomRepository.getAll(offset,10);
     }
 
     @Override
-    public List<CheckIn> getAllByUserName(String name) {
-        return checkInRepository.getAllByUserName(name);
+    public Page<CheckIn> getAllByUserName(Integer offset, String name) {
+
+        return checkInCustomRepository.getAllByUserName(offset,10,name);
     }
 
     @Override
-    public List<CheckIn> getAllByDateInterval(LocalDate initialDate, LocalDate finalDate) {
-        return checkInRepository.getAllByDateInterval(initialDate,finalDate);
+    public Page<CheckIn> getAllByDateInterval(Integer offset,LocalDate initialDate, LocalDate finalDate) {
+
+        return checkInCustomRepository.getAllByDateInterval(offset,10,initialDate,finalDate);
     }
 }

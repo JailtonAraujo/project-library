@@ -42,7 +42,7 @@ const findAll = async () => {
             .then((res)=>res.json())
             .catch((err)=>err);
 
-        return data;
+        return data.content;
 
     } catch (error) {
         console.log(error);

@@ -1,7 +1,10 @@
 package com.br.checkinproducer.model;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,6 +12,9 @@ import java.time.LocalDate;
 
 @Data
 @Entity(name = "tbl_checkin")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CheckIn implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

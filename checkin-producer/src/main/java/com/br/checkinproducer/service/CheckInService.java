@@ -2,6 +2,7 @@ package com.br.checkinproducer.service;
 
 import com.br.checkinproducer.exception.PendingCheckIngException;
 import com.br.checkinproducer.model.CheckIn;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,10 +19,10 @@ public interface CheckInService {
 
     public CheckIn createCheckIn(CheckIn order) throws PendingCheckIngException;
 
-    public List<CheckIn> getAllCheckIn();
+    public Page<CheckIn> getAllCheckIn(Integer offset);
 
-    public List<CheckIn> getAllByUserName(String name);
+    public Page<CheckIn> getAllByUserName(Integer offset,String name);
 
-    public List<CheckIn> getAllByDateInterval(LocalDate initialDate, LocalDate finalDate);
+    public Page<CheckIn> getAllByDateInterval(Integer offset,LocalDate initialDate, LocalDate finalDate);
 
 }
