@@ -7,10 +7,11 @@ import checkInService from "../services/checkInService";
 
 const initialState = {
     checkin: {},
-    checkInList: [],
+    checkInList:[],
+    totalElements:0,
+    totalPages:0,
     loading: false,
     error: false,
-    success: true,
     message: ''
 }
 
@@ -32,8 +33,12 @@ export const checkIn = createAsyncThunk(
 
 export const findAll = createAsyncThunk(
     "checkIn/findAll",
-    async () =>{
-        const data = await checkInService.findAll();
+    async (offset:number) =>{
+        const data = await checkInService.findAll(offset);
+
+        if(data.error){
+            return data.rejectWithValue(data);
+        }
        
         return data;
     }
@@ -48,7 +53,6 @@ export const checkInSlice = createSlice({
         resetState: (state) => {
             state.loading = false;
             state.error = false;
-            state.success = true;
             state.message = '';
         },
     },
@@ -63,7 +67,6 @@ export const checkInSlice = createSlice({
             notify(`CheckIn feito com sucesso!`,'success');
         }).addCase(checkIn.rejected,(state,action:any)=>{
             state.error = true;
-            state.success = false;
             state.message = `Erro - ${action.payload}`;
             notify(`Erro - ${action.payload.message}`,'error');
         })
@@ -72,7 +75,14 @@ export const checkInSlice = createSlice({
             state.loading=true;
         }).addCase(findAll.fulfilled,(state,action:any)=>{
             state.loading = false;
-            state.checkInList = action.payload;
+            state.checkInList = action.payload.content;
+            state.totalElements = action.payload.totalElements;
+            state.totalPages = action.payload.totalPages;
+        }).addCase(findAll.rejected,(state)=>{
+            state.checkInList = [];
+            state.loading = false;
+            state.totalElements = 0;
+            state.totalPages = 0;
         })
 
     }

@@ -29,7 +29,7 @@ const Acervo = () =>{
                     <NavLink className='btn' to='/book/new' >Cadastrar</NavLink>
                 </div>
                 <ul className={style.list_books}>
-                    {books && books.map((book:Book)=>(
+                    {(books.length > 0) && books.map((book:Book)=>(
                     <div key={book.id}>
                         <CardBook 
                             gender={book.gender} 

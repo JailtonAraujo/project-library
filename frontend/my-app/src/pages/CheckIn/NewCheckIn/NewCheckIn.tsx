@@ -5,7 +5,7 @@ import CardBook from '../../../components/cardBook/CardBook';
 
 //hooks
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 //slices
@@ -29,6 +29,8 @@ const NewCheckIn = () => {
     const dispath = useDispatch<any>();
 
     const {id} = useParams();
+
+    const navigate = useNavigate();
 
     const { book } = useSelector((state:any)=>state.book);
     const { customers } = useSelector((state:any)=>state.customer);
@@ -61,6 +63,8 @@ const NewCheckIn = () => {
         }
 
         dispath(checkIn(checkinData));
+
+        navigate('/');
     }
 
   return (

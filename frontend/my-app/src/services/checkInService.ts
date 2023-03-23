@@ -34,15 +34,15 @@ const createCheckIn = async (checkIn:Checkin) =>{
 }
 
 
-const findAll = async () => {
+const findAll = async (offset:number) => {
     
     try {
         
-        const data = await fetch(`${checkInBaseUrl}/`)
+        const data = await fetch(`${checkInBaseUrl}/?offset=${offset}`)
             .then((res)=>res.json())
             .catch((err)=>err);
 
-        return data.content;
+        return data;
 
     } catch (error) {
         console.log(error);

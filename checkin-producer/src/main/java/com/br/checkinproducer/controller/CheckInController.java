@@ -16,7 +16,7 @@ public interface CheckInController {
     public ResponseEntity<CheckIn> checkIn (@RequestBody CheckIn order) throws PendingCheckIngException;
 
     @GetMapping("/")
-    public ResponseEntity<Page<CheckIn>> getAll ( @RequestParam( name = "offse", defaultValue = "0") Integer offset );
+    public ResponseEntity<Page<CheckIn>> getAll ( @RequestParam( name = "offset", defaultValue = "0") Integer offset );
 
     @GetMapping("/customer/")
     public  ResponseEntity<Page<CheckIn>> getAllByCustomerName (

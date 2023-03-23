@@ -1,5 +1,7 @@
 import style from './CheckInList.module.css';
 
+import Pagination from '../../../components/Pagination/Pagination';
+
 //icons
 import { GiReturnArrow } from 'react-icons/gi';
 import { FiMoreVertical } from 'react-icons/fi';
@@ -27,7 +29,7 @@ const CheckInList = () => {
 
     const dispatch = useDispatch<any>();
 
-    const { checkInList, loading } = useSelector((state: any) => state.checkin);
+    const { checkInList, loading, totalElements, totalPages } = useSelector((state: any) => state.checkin);
 
     const actionsModal = (action: string) => {
 
@@ -39,29 +41,36 @@ const CheckInList = () => {
 
     }
 
-    const handleSearch = () =>{
+    const handleSearch = () => {
 
-            switch (optionSearch) {
-                case 0:
-                    break;
-                case 1:
-                    break;
-                case 2:
-                    break;
-                default:
-                    break;
-            }        
+        switch (optionSearch) {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            default:
+                break;
+        }
 
         console.log(argSearch);
     }
 
+    const handlePaginate = (offset:number) =>{
+        console.log(offset)
+        dispatch(findAll(offset));
+    }
+
+
+
     useEffect(() => {
-        dispatch(findAll());
+        dispatch(findAll(0));
     }, [])
 
-    if (loading) {
-        return <> Loading... </>
-    }
+    // if (loading) {
+    //     return <> Loading... </>
+    // }
 
     return (
         <div className='container-main'>
@@ -72,16 +81,16 @@ const CheckInList = () => {
                 </div>
 
                 <div className={style.search_container}>
-                    <select name="select" onChange={(e)=>{setOptionSearch(Number(e.target.value))}}>
+                    <select name="select" onChange={(e) => { setOptionSearch(Number(e.target.value)) }}>
                         <option value="0" defaultValue={0} >Buscar Todos</option>
                         <option value="1">Buscar por Cliente</option>
                         <option value="2">Buscar por Data</option>
                     </select>
                     <div className={style.search_field}>
-                        <input 
+                        <input
                             type={optionSearch === 2 ? 'date' : 'text'}
                             placeholder='Buscar por data ou nome do cliente'
-                            onChange={(e)=>setArgSearch(e.target.value)} 
+                            onChange={(e) => setArgSearch(e.target.value)}
                         />
                         <button onClick={handleSearch}> <FcSearch /> </button>
                     </div>
@@ -96,7 +105,7 @@ const CheckInList = () => {
                         <span>Ações</span>
                     </div>
 
-                    {checkInList && checkInList.map((checkIn: Checkin) => (
+                    {checkInList.length > 0 && checkInList.map((checkIn: Checkin) => (
 
                         <div className={style.row_tbl} key={checkIn.id}>
                             <span>{checkIn.customer.name}</span>
@@ -111,6 +120,14 @@ const CheckInList = () => {
                         </div>
                     ))}
                 </div>
+
+                        {totalPages && (
+                                 <Pagination
+                                 handlePaginate={handlePaginate}
+                                 pageCount={totalPages}
+                                 itensPerPage={10}
+                             />
+                        )}
             </div>
 
             <div className="modal " ref={modalRef}>
@@ -156,5 +173,6 @@ const CheckInList = () => {
         </div>
     )
 }
+
 
 export default CheckInList
