@@ -51,10 +51,46 @@ const findAll = async (offset:number) => {
 }
 
 
+const findByCustomerName = async (offset:number,name:string) => {
+    
+    try {
+        
+        const data = await fetch(`${checkInBaseUrl}/customer/?name=${name}&offset=${offset}`)
+            .then((res)=>res.json())
+            .catch((err)=>err);
+
+        return data;
+
+    } catch (error) {
+        console.log(error);
+    }
+    
+}
+
+const findByDateInterval = async (offset:number,intialDate:string,finalDate:string) => {
+    
+    try {
+        
+        const data = await fetch(`${checkInBaseUrl}/date/?initial=${intialDate}&final=${finalDate}&offset=${offset}`)
+            .then((res)=>res.json())
+            .catch((err)=>err);
+
+
+        return data;
+
+    } catch (error) {
+        console.log(error);
+    }
+    
+}
+
+
 
 const checkInService = {
     createCheckIn,
-    findAll
+    findAll,
+    findByCustomerName,
+    findByDateInterval
 }
 
 export default checkInService;

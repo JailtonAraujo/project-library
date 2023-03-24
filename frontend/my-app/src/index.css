@@ -43,7 +43,7 @@ html,body{
 /*Modal styles*/
 
 .modal{
-    position:absolute;
+    position:fixed;
     display: none;
     justify-content: center;
 	top:0;

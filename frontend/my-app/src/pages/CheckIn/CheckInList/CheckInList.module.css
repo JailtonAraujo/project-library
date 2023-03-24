@@ -14,6 +14,7 @@
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     border-radius: 5px;
     padding: 1em;
+    margin-top: 0.3em;
 }
 
 .header_tbl{
@@ -74,6 +75,7 @@
     outline: none;
     font-size: 1em;
     font-weight: bold;
+    margin-bottom: 0.3em;
 }
 
 .search_field{
@@ -100,5 +102,17 @@
     background: none;
     margin: 0;
     padding: 0em 0.2em;
-    top: 3px;
+    top: 13%;
+    bottom: 49%;
+    right: 0;
+}
+
+
+.data_interval{
+    width: 100%;
+    display: flex;
+}
+
+.data_interval label{
+    border-right: 2px solid #000;
 }

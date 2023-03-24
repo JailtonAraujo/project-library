@@ -45,6 +45,38 @@ export const findAll = createAsyncThunk(
 )
 
 
+export const findByCustomerName = createAsyncThunk(
+    "checkIn/findbyCustomerName",
+    async (objectSearch:any) =>{
+        const data = await checkInService.findByCustomerName(Number(objectSearch.offset),objectSearch.name);
+
+        if(data.error){
+            return data.rejectWithValue(data);
+        }
+       
+        return data;
+    }
+)
+
+
+export const findByDateInterval = createAsyncThunk(
+    "checkIn/findbyDateInerval",
+    async (objectSearch:any) =>{
+        const data = await checkInService.findByDateInterval(
+            Number(objectSearch.offset),
+            objectSearch.initialDate,
+            objectSearch.finalDate
+            );
+
+        if(data.error){
+            return data.rejectWithValue(data);
+        }
+       
+        return data;
+    }
+)
+
+
 export const checkInSlice = createSlice({
     name: 'customer',
     initialState,
@@ -79,6 +111,34 @@ export const checkInSlice = createSlice({
             state.totalElements = action.payload.totalElements;
             state.totalPages = action.payload.totalPages;
         }).addCase(findAll.rejected,(state)=>{
+            state.checkInList = [];
+            state.loading = false;
+            state.totalElements = 0;
+            state.totalPages = 0;
+        })
+
+        .addCase(findByCustomerName.pending,(state)=>{
+            state.loading=true;
+        }).addCase(findByCustomerName.fulfilled,(state,action:any)=>{
+            state.loading = false;
+            state.checkInList = action.payload.content;
+            state.totalElements = action.payload.totalElements;
+            state.totalPages = action.payload.totalPages;
+        }).addCase(findByCustomerName.rejected,(state)=>{
+            state.checkInList = [];
+            state.loading = false;
+            state.totalElements = 0;
+            state.totalPages = 0;
+        })
+
+        .addCase(findByDateInterval.pending,(state)=>{
+            state.loading=true;
+        }).addCase(findByDateInterval.fulfilled,(state,action:any)=>{
+            state.loading = false;
+            state.checkInList = action.payload.content;
+            state.totalElements = action.payload.totalElements;
+            state.totalPages = action.payload.totalPages;
+        }).addCase(findByDateInterval.rejected,(state)=>{
             state.checkInList = [];
             state.loading = false;
             state.totalElements = 0;

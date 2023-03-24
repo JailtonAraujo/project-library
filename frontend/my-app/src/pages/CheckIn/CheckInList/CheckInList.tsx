@@ -12,7 +12,7 @@ import { FcSearch } from 'react-icons/fc';
 import { useRef, useEffect, useState } from 'react';
 
 //slices
-import { findAll } from '../../../slices/checkInSlice';
+import { findAll, findByCustomerName, findByDateInterval } from '../../../slices/checkInSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { environment } from '../../../environments';
@@ -24,12 +24,16 @@ const CheckInList = () => {
 
     const modalRef = useRef<HTMLDivElement>(null);
     const [checkSelected, setCheckSelected] = useState(null) as any;
+
     const [optionSearch, setOptionSearch] = useState(0);
-    const [argSearch, setArgSearch] = useState('');
+    const [nameSearch, setNameSearch] = useState('');
+
+    const [initialDate, setInitialDate] = useState('');
+    const [finalDate, setFinalDate] = useState('');
 
     const dispatch = useDispatch<any>();
 
-    const { checkInList, loading, totalElements, totalPages } = useSelector((state: any) => state.checkin);
+    const { checkInList, totalElements, totalPages } = useSelector((state: any) => state.checkin);
 
     const actionsModal = (action: string) => {
 
@@ -43,23 +47,47 @@ const CheckInList = () => {
 
     const handleSearch = () => {
 
+        /*
+            CASE 0 -> FIND ALL CHECKINS;
+            CASE 1 -> FIND BY CUSTOMER NAME;
+            CASE 2 -> FIND BY DATE INTERVAL;
+        */
+
         switch (optionSearch) {
             case 0:
+                dispatch(findAll(0));
                 break;
             case 1:
+                dispatch(findByCustomerName({ offset: 0, name:nameSearch }));
                 break;
             case 2:
+                dispatch(findByDateInterval({offset:0,initialDate,finalDate}));
                 break;
             default:
                 break;
         }
 
-        console.log(argSearch);
     }
 
-    const handlePaginate = (offset:number) =>{
-        console.log(offset)
-        dispatch(findAll(offset));
+    const handlePaginate = (offset: number) => {
+
+        // dispatch(findAll(offset));
+
+        switch (optionSearch) {
+            case 0:
+                dispatch(findAll(offset));
+                break;
+            case 1:
+                dispatch(findByCustomerName({ offset:offset, name:nameSearch }));
+                break;
+            case 2:
+                dispatch(findByDateInterval({offset,initialDate,finalDate}));
+                break;
+            default:
+                break;
+        }
+
+
     }
 
 
@@ -67,10 +95,6 @@ const CheckInList = () => {
     useEffect(() => {
         dispatch(findAll(0));
     }, [])
-
-    // if (loading) {
-    //     return <> Loading... </>
-    // }
 
     return (
         <div className='container-main'>
@@ -84,17 +108,37 @@ const CheckInList = () => {
                     <select name="select" onChange={(e) => { setOptionSearch(Number(e.target.value)) }}>
                         <option value="0" defaultValue={0} >Buscar Todos</option>
                         <option value="1">Buscar por Cliente</option>
-                        <option value="2">Buscar por Data</option>
+                        <option value="2">Buscar por Intervalo</option>
                     </select>
                     <div className={style.search_field}>
-                        <input
-                            type={optionSearch === 2 ? 'date' : 'text'}
-                            placeholder='Buscar por data ou nome do cliente'
-                            onChange={(e) => setArgSearch(e.target.value)}
-                        />
+
+                        {(optionSearch <= 1) && (
+                            <input
+                                type='text'
+                                placeholder='Buscar por data ou nome do cliente'
+                                onChange={(e) => setNameSearch(e.target.value)}
+                            />
+                        )}
+
+                       {(optionSearch === 2) && (
+                         <div className={style.data_interval}>
+                         <label>
+                             <span>Data inicial:</span>
+                             <input type="date" onChange={(e)=>setInitialDate(e.target.value)}/>
+                         </label>
+                         <label>
+                             <span>Data final:</span>
+                             <input type="date" onChange={(e)=>setFinalDate(e.target.value)}/>
+                         </label>
+                     </div>
+                       )}
+
+
                         <button onClick={handleSearch}> <FcSearch /> </button>
                     </div>
                 </div>
+
+                <h3>{totalElements} resultados encontrados...</h3>
 
                 <div className={style.checkin_tbl}>
                     <div className={style.header_tbl}>
@@ -121,13 +165,13 @@ const CheckInList = () => {
                     ))}
                 </div>
 
-                        {totalPages && (
-                                 <Pagination
-                                 handlePaginate={handlePaginate}
-                                 pageCount={totalPages}
-                                 itensPerPage={10}
-                             />
-                        )}
+               
+                    <Pagination
+                        handlePaginate={handlePaginate}
+                        pageCount={totalPages}
+                        itensPerPage={10}
+                    />
+              
             </div>
 
             <div className="modal " ref={modalRef}>
