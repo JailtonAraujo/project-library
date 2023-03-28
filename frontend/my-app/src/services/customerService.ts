@@ -31,11 +31,11 @@ const newCustomer = async (customer:any) =>{
 
 }
 
-const getAll = async () => {
+const getAll = async (offset:number) => {
 
     try {
         
-        const data = await fetch(`${customerEndPoint}/`)
+        const data = await fetch(`${customerEndPoint}/?offset=${offset}`)
             .then((res)=>res.json())
             .catch((err)=>err);
 
@@ -107,11 +107,11 @@ const updateCustomer = async (customer:any) =>{
 
 }
 
-const finByName = async (name:string) =>{
+const finByName = async (name:string,offset:number) =>{
 
     try {
         
-        const data = await fetch(`${customerEndPoint}/search/name?name=${name}`)
+        const data = await fetch(`${customerEndPoint}/search/name?name=${name}&offset=${offset}`)
             .then((res)=>res.json())
             .catch((err)=>err);
 

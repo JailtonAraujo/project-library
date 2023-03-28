@@ -17,9 +17,19 @@ const register = async (req,res) =>{
 
 const findAllCustomer = async (req, res) =>{
 
-    const customers = await Customer.findAll();
+    const offset = req.query.offset ? req.query.offset : 0;
+   
+    const customers = await Customer.findAll({offset:Number(offset),limit:10});
+    const totalElements = await Customer.count();
+   
+    const page ={
+        content:customers,
+        totalPages:Math.ceil(totalElements/10),
+        totalElements,
+        offset:Number(offset)
+    }
 
-    res.status(201).json(customers)
+    res.status(201).json(page);
 
 }
 
@@ -36,10 +46,19 @@ const deleteCustomer = async (req,res) =>{
 const findByName = async (req, res) =>{
 
     const nameSearch = req.query.name;
+    const offset = req.query.offset ? req.query.offset : 0; 
 
-    const customers = await Customer.findAll({where:{name:{[Op.like]:`${nameSearch}%`}}});
+    const customers = await Customer.findAll({where:{name:{[Op.like]:`${nameSearch}%`}},offset:Number(offset),limit:10});
+    const totalElements = await Customer.count({where:{name:{[Op.like]:`${nameSearch}%`}}});
+   
+    const page ={
+        content:customers,
+        totalPages:Math.ceil(totalElements/10),
+        totalElements,
+        offset:Number(offset)
+    }
 
-    res.status(200).json(customers);
+    res.status(200).json(page);
 
 }
 

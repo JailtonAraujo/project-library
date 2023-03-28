@@ -8,9 +8,10 @@ import customerServices from '../services/customerService';
 const initialState ={
     customers:[] as any,
     customer:{},
+    totalPages:0,
+    totalElements:0,
     loading:false,
     error:false,
-    success:true,
     message:''
 }
 
@@ -31,9 +32,9 @@ export const newCustomer = createAsyncThunk(
 
 export const getAll = createAsyncThunk(
     "customer/getAll",
-    async () =>{
+    async (offset:number) =>{
 
-        const data = await customerServices.getAll();
+        const data = await customerServices.getAll(offset);
 
         return data;
 
@@ -53,9 +54,9 @@ export const finfById = createAsyncThunk(
 
 export const finfByName = createAsyncThunk(
     "customer/name",
-    async (name:string) =>{
+    async (objectSearch:any) =>{
 
-        const data = await customerServices.finByName(name);
+        const data = await customerServices.finByName(objectSearch.name,objectSearch.offset);
 
         return data;
 
@@ -96,7 +97,6 @@ export const customerSlice = createSlice({
         resetState :(state)=>{
             state.loading=false;
             state.error=false;
-            state.success=true;
             state.message='';
          },
     },
@@ -108,7 +108,9 @@ export const customerSlice = createSlice({
         })
         .addCase(getAll.fulfilled,(state, action)=>{
             state.loading = false;
-            state.customers = action.payload;
+            state.customers = action.payload.content;
+            state.totalPages = action.payload.totalPages;
+            state.totalElements = action.payload.totalElements;
         })
 
         .addCase(newCustomer.pending,(state)=>{
@@ -118,11 +120,9 @@ export const customerSlice = createSlice({
             state.loading = false;
             state.customers.push(action.payload);
             notify('Cliente cadastrado com sucesso!','success');
-            state.success=true;
         }).addCase(newCustomer.rejected,(state,action:any)=>{
             state.loading = false;
             state.error = true;
-            state.success = false;
             notify(`error: ${action.payload.message}`,'error');
         })
 
@@ -164,7 +164,9 @@ export const customerSlice = createSlice({
         })
         .addCase(finfByName.fulfilled,(state, action)=>{
             state.loading = false;
-            state.customers = action.payload;
+            state.customers = action.payload.content;
+            state.totalPages = action.payload.totalPages;
+            state.totalElements = action.payload.totalElements;
         })
 
     }
