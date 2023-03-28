@@ -14,6 +14,7 @@ import AddCustomer from './pages/Customer/AddCustomer/AddCustomer';
 import UpdateCustomer from './pages/UpdateCustomer/UpdateCustomer';
 import NewCheckIn from './pages/CheckIn/NewCheckIn/NewCheckIn';
 import CheckInList from './pages/CheckIn/CheckInList/CheckInList';
+import CheckOutList from './pages/CheckOut/CheckOutList/CheckOutList';
 
 //hooks
 import { ToastContainer } from './hooks/useToast';
@@ -42,6 +43,7 @@ function App() {
             <Route path='/customers/update/:id' element={<UpdateCustomer/>} />
 
             <Route path='/checkin' element={<CheckInList/>} />
+            <Route path='/checkout' element={<CheckOutList/>} />
 
         </Routes>
         <Footer/>
