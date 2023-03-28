@@ -1,8 +1,15 @@
 .container_pagination{
     width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     padding:1em;
+}
+
+.container_pagination p{
+    text-align: center;
+    margin-top: 1em;
+    font-weight: bold;
 }
 
 .content_pagination{

@@ -4,11 +4,11 @@ import { Book } from '../interfaces/Book';
 const bookEndPoint = `${environment.baseApicustomersAndBooks}/book`;
 
 
-const findAllBooks = async () => {
+const findAllBooks = async (offset:number) => {
 
     try {
 
-        const data = await fetch(`${bookEndPoint}/`)
+        const data = await fetch(`${bookEndPoint}/?offset=${offset}`)
             .then((res) => res.json())
             .catch((err) => err);
 
@@ -95,13 +95,51 @@ const updateBook = async (bookData:any) =>{
 
 }
 
+const findByName = async (name:string, offset:number) =>{
+
+
+    try {
+        
+        const data = await fetch(`${bookEndPoint}/find/name?name=${name}&offset=${offset}`)
+            .then((res)=>res.json())
+            .catch((err)=>err);
+
+            return data;
+
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
+const findByGender = async (name:string, offset:number) =>{
+
+
+    try {
+        
+        const data = await fetch(`${bookEndPoint}/find/gender?gender=${name}&offset=${offset}`)
+            .then((res)=>res.json())
+            .catch((err)=>err);
+
+            console.log(data);
+
+            return data;
+
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
 
 const bookService = {
     findAllBooks,
     findById,
     newBook,
     deleteBook,
-    updateBook
+    updateBook,
+    findByName,
+    findByGender
 }
 
 export default bookService;

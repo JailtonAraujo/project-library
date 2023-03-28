@@ -8,6 +8,8 @@ import bookService from "../services/bookService";
 const initialState = {
     book:{},
     books:[] as any,
+    totalElements:0,
+    totalPages:0,
     loading:false,
     error:false,
     success:true,
@@ -16,9 +18,11 @@ const initialState = {
 
 export const findAllBooks = createAsyncThunk(
     "book/find",
-    async ()=>{
+    async (offset:number)=>{
 
-        const data = await bookService.findAllBooks();
+        const data = await bookService.findAllBooks(offset);
+
+        console.log(data)
 
         return data;
 
@@ -34,7 +38,33 @@ export const finBookById = createAsyncThunk(
         return data;
 
     }
-)
+);
+
+export const findByName = createAsyncThunk(
+    "book/findByName",
+    async (objectSearch:any)=>{
+
+        const data = await bookService.findByName(objectSearch.name, objectSearch.offset);
+
+        console.log(data)
+
+        return data;
+
+    }
+);
+
+export const findByGender = createAsyncThunk(
+    "book/findByGender",
+    async (objectSearch:any)=>{
+
+        const data = await bookService.findByGender(objectSearch.name, objectSearch.offset);
+
+        console.log(data)
+
+        return data;
+
+    }
+);
 
 export const newBook = createAsyncThunk(
     "book/new",
@@ -91,7 +121,6 @@ export const bookSlice = createSlice({
         resetState :(state)=>{
            state.loading=false;
            state.error=false;
-           state.success=true;
            state.message='';
         },
 
@@ -102,7 +131,9 @@ export const bookSlice = createSlice({
         .addCase(findAllBooks.pending,(state)=>{
             state.loading=true;
         }).addCase(findAllBooks.fulfilled,(state,action)=>{
-            state.books = action.payload;
+            state.books = action.payload.content;
+            state.totalElements = action.payload.totalElements;
+            state.totalPages = action.payload.totalPages;
             state.loading = false;
         })
 
@@ -123,7 +154,6 @@ export const bookSlice = createSlice({
             state.book = {};
             state.loading = false;
             state.error = true;
-            state.success = false;
             notify(`error: ${action.payload.message}`,'error');
             state.message = action.payload.message
         })
@@ -137,7 +167,6 @@ export const bookSlice = createSlice({
         }).addCase(deleteBook.rejected,(state,action:any)=>{
             state.loading = false;
             state.error = true;
-            state.success = false;
             notify(`error: ${action.payload.message}`,'error');
             state.message = action.payload.message
         })
@@ -152,11 +181,27 @@ export const bookSlice = createSlice({
             state.book = {};
             state.loading = false;
             state.error = true;
-            state.success = false;
             notify(`error: ${action.payload.message}`,'error');
             state.message = action.payload.message
         })
 
+        .addCase(findByName.pending,(state)=>{
+            state.loading=true;
+        }).addCase(findByName.fulfilled,(state,action)=>{
+            state.books = action.payload.content;
+            state.totalElements = action.payload.totalElements;
+            state.totalPages = action.payload.totalPages;
+            state.loading = false;
+        })
+
+        .addCase(findByGender.pending,(state)=>{
+            state.loading=true;
+        }).addCase(findByGender.fulfilled,(state,action)=>{
+            state.books = action.payload.content;
+            state.totalElements = action.payload.totalElements;
+            state.totalPages = action.payload.totalPages;
+            state.loading = false;
+        })
 
     }
 

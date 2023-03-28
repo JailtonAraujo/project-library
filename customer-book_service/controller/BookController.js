@@ -2,6 +2,7 @@ const { Op } = require('sequelize');
 const {Book, bookExists, getImage} = require('../models/Book');
 
 const { deleteImage } = require('../helpers/handleImage');
+const { query } = require('express');
 
 const saveBook = async (req, res) => {
 
@@ -37,9 +38,20 @@ const saveBook = async (req, res) => {
 
 const findAllBooks = async (req,res) =>{
 
-    const books = await Book.findAll();
+    const offset = req.query.offset ? req.query.offset : 0;
 
-    res.status(200).json(books);
+    const books = await Book.findAll({offset:Number(offset),limit:12});
+
+    const totalElements = await Book.count();
+
+    const page={
+        content:books,
+        totalElements:totalElements,
+		totalPages: Math.ceil(totalElements/12),
+        offset:Number(offset)
+    }
+
+    res.status(200).json(page);
 
 }
 
@@ -75,32 +87,50 @@ const findById = async (req,res) =>{
 const findByName = async (req,res) =>{
 
     const name = req.query.name;
-
-    console.log(name)
+	const offset = req.query.offset ? req.query.offset : 0;
 
     if(!name){
         res.status(404).json({message:"name is required for search"});
         return;
     }
 
-    const book = await Book.findAll({where:{name:{[Op.like]:`${name}%`}}});
+    const books = await Book.findAll({where:{name:{[Op.like]:`${name}%`}},offset:Number(offset),limit:12});
+	
+	const totalElements = await Book.count({where:{name:{[Op.like]:`${name}%`}}});
+	
+	const page={
+        content:books,
+        totalElements:totalElements,
+		totalPages: Math.ceil(totalElements/12),
+        offset:Number(offset)
+    }
 
-    res.status(422).json(book);
+    res.status(422).json(page);
 
 }
 
 const findByGender = async (req,res) =>{
 
     const gender = req.query.gender;
+	const offset = req.query.offset ? req.query.offset : 0;
 
     if(!gender){
         res.status(422).json({message:"gender is required for search!"});
         return;
     }
 
-    const books = await Book.findAll({where:{gender:gender}});
+    const books = await Book.findAll({where:{gender:{[Op.like]:`${gender}%`}},offset:Number(offset),limit:12});
 
-    res.status(200).json(books);
+	const totalElements = await Book.count({where:{gender:{[Op.like]:`${gender}%`}}});
+
+	const page={
+        content:books,
+        totalElements:totalElements,
+		totalPages: Math.ceil(totalElements/12),
+        offset:Number(offset)
+    }	
+
+    res.status(200).json(page);
 }
 
 

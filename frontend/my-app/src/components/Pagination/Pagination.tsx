@@ -7,7 +7,8 @@ import ReactPaginate from 'react-paginate';
 export interface Propspagination{
   handlePaginate:any,
   pageCount:number,
-  itensPerPage:number
+  itensPerPage:number,
+  totalElements?:number
 }
 
 const Pagination = (props:Propspagination) => {
@@ -35,6 +36,9 @@ const Pagination = (props:Propspagination) => {
                     activeLinkClassName={style.select_element}  
                 />
         </div>
+        {props.totalElements && (
+          <p>{props.totalElements} Resuldados encontrados...</p>
+        )}
     </div>
   )
 }
