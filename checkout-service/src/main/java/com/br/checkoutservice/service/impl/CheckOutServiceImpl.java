@@ -4,11 +4,13 @@ import com.br.checkoutservice.exception.CheckInException;
 import com.br.checkoutservice.model.CheckOut;
 import com.br.checkoutservice.model.States;
 import com.br.checkoutservice.repository.CheckOutRepository;
+import com.br.checkoutservice.repository.CustomCheckOutRepository;
 import com.br.checkoutservice.repository.CustomRepository;
 import com.br.checkoutservice.repository.CustomerRepository;
 import com.br.checkoutservice.service.CheckOutService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,8 @@ public class CheckOutServiceImpl implements CheckOutService {
     private final CheckOutRepository checkOutRepository;
 
     private final CustomRepository customRepository;
+
+    private final CustomCheckOutRepository customCheckOutRepository;
 
 //    private final KafkaTemplate<String, Serializable> kafkaTemplate;
 
@@ -106,5 +110,20 @@ public class CheckOutServiceImpl implements CheckOutService {
 //        kafkaTemplate.send("checkout-topic",checkOutCreated);
 
         return checkOutCreated;
+    }
+
+    @Override
+    public Page<CheckOut> findAll(int offset, int limit) throws Exception {
+        return customCheckOutRepository.findAll(offset,limit);
+    }
+
+    @Override
+    public Page<CheckOut> findByCustomer(int offset, int limit, String customerName) throws Exception {
+        return customCheckOutRepository.findByCustomer(offset,limit,customerName);
+    }
+
+    @Override
+    public Page<CheckOut> findBy(int offset, int limit, LocalDate initialDate, LocalDate finalDate) throws Exception {
+        return customCheckOutRepository.findByDateInterval(offset,limit,initialDate,finalDate);
     }
 }
