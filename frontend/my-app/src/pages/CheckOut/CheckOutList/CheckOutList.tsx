@@ -77,17 +77,15 @@ const CheckOutList = () => {
 
     const handlePaginate = (offset: number) => {
 
-        // dispatch(findAll(offset));
-
         switch (optionSearch) {
             case 0:
-                // dispatch(findAll(offset));
+                dispatch(findAll(offset));
                 break;
             case 1:
-                // dispatch(findByCustomerName({ offset:offset, name:nameSearch }));
+                dispatch(findByCustomer({ offset:offset, name:nameSearch }));
                 break;
             case 2:
-                // dispatch(findByDateInterval({offset,initialDate,finalDate}));
+                dispatch(findByDateInterval({offset,initialDate,finalDate}));
                 break;
             default:
                 break;
@@ -155,7 +153,7 @@ const CheckOutList = () => {
                         <div className={style.row_tbl} key={checkOut.id}>
                             <span>{checkOut.customer.name}</span>
                             <span>{checkOut.book.name}</span>
-                            <span>{checkOut.dateCheckOut?.toString()}</span>
+                            <span>{new Date(String(checkOut.dateCheckOut)).toLocaleDateString()}</span>
                             <span>
                                 <button className='btn' title='Detalhes!' onClick={() => { actionsModal('show'); setCheckSelected(checkOut) }}><FiMoreVertical /></button>
                             </span>
@@ -192,7 +190,7 @@ const CheckOutList = () => {
 
                                 <label className='form-group'>
                                     <span>Data da devolução:</span>
-                                    <input type="text" readOnly value={checkSelected.dateCheckOut?.toString()} />
+                                    <input type="text" readOnly value={new Date(String(checkSelected.dateCheckOut)).toLocaleDateString()} />
                                 </label>
 
                                 <label className='form-group'>

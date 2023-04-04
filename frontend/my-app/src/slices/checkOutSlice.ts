@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { CheckOut } from '../interfaces/CheckOut';
 
 import checkOutService from '../services/checkOutService';
+
+import { notify } from '../hooks/useToast';
 
 const initialState = {
     checkOut:{},
@@ -11,6 +14,21 @@ const initialState = {
     error:false,
     loading:false
 }
+
+// export const checkOut = createAsyncThunk(
+//     "checkOut",
+//     async (checkOut:CheckOut,thunkApi)=>{
+
+//         const data = await checkOutService.createCheckOut(checkOut);
+
+//         if(data.error){
+//             return thunkApi.rejectWithValue(data);
+//         }
+
+//         return data;
+
+//     }
+// )
 
 export const findAll = createAsyncThunk(
     "checkOut/findAll",
@@ -86,6 +104,20 @@ export const checkOutSlice = createSlice({
             state.totalPages = action.payload.totalPages;
             state.totalElements = action.payload.totalElements;
         })
+
+        // .addCase(checkOut.pending,(state)=>{
+        //     state.loading = true;
+        // }).addCase(checkOut.fulfilled,(state,action)=>{
+        //     state.loading = false;
+        //     notify('Livro devolvido com sucesso!','success');
+            
+        // }).addCase(checkOut.rejected,(state,action:any)=>{
+        //     state.loading = false;
+        //     state.message = 'Livro devolvido com sucesso!';
+        //     state.error = true;
+        //     notify('Error: '+action.payload.message,'error');
+
+        // })
 
     }
 })

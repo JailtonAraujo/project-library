@@ -16,7 +16,7 @@ const Acervo = () => {
     const [search, setSearch] = useState('');
     const [opcSearch, setOpcSearch] = useState(0);
 
-    const { books, totalElements, totalPages, loading, error, message } = useSelector((state: any) => state.book);
+    const { books, totalElements, totalPages } = useSelector((state: any) => state.book);
 
     const dispath = useDispatch<any>();
 
@@ -50,7 +50,7 @@ const Acervo = () => {
 
     useEffect(() => {
         dispath(findAllBooks(0));
-    }, []);
+    }, [dispath]);
 
 
     return (
@@ -69,7 +69,7 @@ const Acervo = () => {
                             </select>
 
                             <div className={style.search_field}>
-                                <input type="text" placeholder='Buscar por nome' onChange={(e) => setSearch(e.target.value)} />
+                                <input type="text" placeholder='Buscar por nome, categoria...' onChange={(e) => setSearch(e.target.value)} />
                                 <button onClick={handleSearch} > <FcSearch /> </button>
                             </div>
                         </div>

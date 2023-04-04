@@ -1,5 +1,6 @@
 package com.br.checkinproducer.controller;
 
+import com.br.checkinproducer.DTO.CheckInDTO;
 import com.br.checkinproducer.exception.PendingCheckIngException;
 import com.br.checkinproducer.model.CheckIn;
 import org.springframework.data.domain.Page;
@@ -16,16 +17,16 @@ public interface CheckInController {
     public ResponseEntity<CheckIn> checkIn (@RequestBody CheckIn order) throws PendingCheckIngException;
 
     @GetMapping("/")
-    public ResponseEntity<Page<CheckIn>> getAll ( @RequestParam( name = "offset", defaultValue = "0") Integer offset );
+    public ResponseEntity<Page<CheckInDTO>> getAll (@RequestParam( name = "offset", defaultValue = "0") Integer offset );
 
     @GetMapping("/customer/")
-    public  ResponseEntity<Page<CheckIn>> getAllByCustomerName (
+    public  ResponseEntity<Page<CheckInDTO>> getAllByCustomerName (
             @RequestParam(name = "name",defaultValue = "") String name,
             @RequestParam(name = "offset", defaultValue = "0") Integer offset
     );
 
     @GetMapping("/date/")
-    public  ResponseEntity<Page<CheckIn>> getAllByDateInterval
+    public  ResponseEntity<Page<CheckInDTO>> getAllByDateInterval
             (@RequestParam(name = "initial")String initialDate,
              @RequestParam(name = "final")String finalDate,
              @RequestParam(name = "offset", defaultValue = "0") Integer offset);

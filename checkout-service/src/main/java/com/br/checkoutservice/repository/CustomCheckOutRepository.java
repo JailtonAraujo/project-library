@@ -27,7 +27,7 @@ public class CustomCheckOutRepository {
 
             List<CheckOut> list = query.setFirstResult(offset).setMaxResults(limit).getResultList();
 
-            Pageable pageable = PageRequest.of(offset,limit);
+            Pageable pageable = PageRequest.of(0,10);
             Page<CheckOut> page = new PageImpl(list, pageable,this.countAll());
 
             return page;
@@ -49,7 +49,7 @@ public class CustomCheckOutRepository {
 
             List<CheckOut> list = query.setFirstResult(offset).setMaxResults(limit).getResultList();
 
-            Pageable pageable = PageRequest.of(offset,limit);
+            Pageable pageable = PageRequest.of(0,10);
             Page<CheckOut> page = new PageImpl(list, pageable,this.countByCustomer(customerName));
 
             return page;
@@ -70,7 +70,7 @@ public class CustomCheckOutRepository {
 
             List<CheckOut> list = query.setFirstResult(offset).setMaxResults(limit).getResultList();
 
-            Pageable pageable = PageRequest.of(offset,limit);
+            Pageable pageable = PageRequest.of(0,10);
             Page<CheckOut> page = new PageImpl(list, pageable,this.countByDateInterval(initialDate,finalDate));
 
             return page;

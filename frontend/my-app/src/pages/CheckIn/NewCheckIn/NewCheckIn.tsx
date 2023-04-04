@@ -34,7 +34,7 @@ const NewCheckIn = () => {
 
     const { book } = useSelector((state:any)=>state.book);
     const { customers } = useSelector((state:any)=>state.customer);
-    const { loading, checkIn:checkInRedux } = useSelector((state:any)=>state.customer);
+    const { loading } = useSelector((state:any)=>state.customer);
 
 
     useEffect(()=>{
@@ -43,7 +43,7 @@ const NewCheckIn = () => {
             dispath(finBookById(Number(id)));
         }
 
-    },[id]);
+    },[id,dispath]);
 
     const handleSearch = () =>{
 

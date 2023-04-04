@@ -9,4 +9,6 @@ export interface Checkin{
     checkout_date?:Date,
     state?:string,
     valor?:number,
+    daysLate?:number,
+    taxa?:number
 }

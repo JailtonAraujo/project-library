@@ -1,5 +1,6 @@
 package com.br.checkinproducer.service.impl;
 
+import com.br.checkinproducer.DTO.CheckInDTO;
 import com.br.checkinproducer.exception.PendingCheckIngException;
 import com.br.checkinproducer.model.Book;
 import com.br.checkinproducer.model.CheckIn;
@@ -11,6 +12,7 @@ import com.br.checkinproducer.repository.CheckInRepository;
 import com.br.checkinproducer.service.CheckInService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.NoResultException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +33,8 @@ import java.util.Optional;
 public class CheckInServiceImpl implements CheckInService {
 
     private final BookRepository bookRepository;
+
+    private final ModelMapper modelMapper;
 
     private final CustomerRepository customerRepository;
 
@@ -124,20 +129,45 @@ public class CheckInServiceImpl implements CheckInService {
     }
 
     @Override
-    public Page<CheckIn> getAllCheckIn(Integer offset)  {
+    public Page<CheckInDTO> getAllCheckIn(Integer offset)  {
 
         return checkInCustomRepository.getAll(offset,10);
+
+
     }
 
     @Override
-    public Page<CheckIn> getAllByUserName(Integer offset, String name) {
+    public Page<CheckInDTO> getAllByUserName(Integer offset, String name) {
 
         return checkInCustomRepository.getAllByUserName(offset,10,name);
     }
 
     @Override
-    public Page<CheckIn> getAllByDateInterval(Integer offset,LocalDate initialDate, LocalDate finalDate) {
+    public Page<CheckInDTO> getAllByDateInterval(Integer offset,LocalDate initialDate, LocalDate finalDate) {
 
         return checkInCustomRepository.getAllByDateInterval(offset,10,initialDate,finalDate);
+    }
+
+    public CheckInDTO convertModelInDTOAndCalTaxa ( CheckIn checkIn ) {
+
+        final float lateFeePerDay = 1.5F;
+        int daysLate = 0;
+        float taxaAtraso = 0F;
+
+        if(checkIn.getCheckout_date().isBefore(LocalDate.now())){
+
+            daysLate = (int) ChronoUnit.DAYS.between(checkIn.getCheckout_date(),LocalDate.now());
+
+            taxaAtraso = (daysLate*lateFeePerDay);
+        }
+
+        CheckInDTO checkInDTO = modelMapper.map(checkIn,CheckInDTO.class);
+
+        checkInDTO.setDaysLate(daysLate);
+        checkInDTO.setTaxa(taxaAtraso);
+        checkInDTO.setValor(checkIn.getValor()+taxaAtraso);
+
+        return checkInDTO;
+
     }
 }

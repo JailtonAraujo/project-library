@@ -66,22 +66,25 @@
 
 
 .search_container{
-   
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 1000px;
+    margin-bottom: 1.2em;
+    gap: 0.3em;
 }
 
 .search_container select{
-    border-radius: 5px;
-    padding: 0.2em;
     outline: none;
+    border: 1px solid #CCC;
     font-size: 1em;
-    font-weight: bold;
-    margin-bottom: 0.3em;
+    border-radius: 5px;
+    padding: 0.4em;
 }
 
 .search_field{
     border: 1px solid #CCC;
     width: 410px;
-    margin-bottom: 2em;
     position: relative;
     border-radius: 5px;
     border: 2px solid #CCC;

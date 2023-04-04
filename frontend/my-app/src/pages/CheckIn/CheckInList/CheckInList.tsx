@@ -1,6 +1,7 @@
 import style from './CheckInList.module.css';
 
 import Pagination from '../../../components/Pagination/Pagination';
+import Loading from '../../../components/Loading/Loading';
 
 //icons
 import { GiReturnArrow } from 'react-icons/gi';
@@ -12,17 +13,20 @@ import { FcSearch } from 'react-icons/fc';
 import { useRef, useEffect, useState } from 'react';
 
 //slices
-import { findAll, findByCustomerName, findByDateInterval } from '../../../slices/checkInSlice';
+import { findAll, findByCustomerName, findByDateInterval, checkOut as checkOutSlice} from '../../../slices/checkInSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { environment } from '../../../environments';
 import { Checkin } from '../../../interfaces/CheckIn';
+import { CheckOut } from '../../../interfaces/CheckOut';
 
 const uploads = environment.uploads;
 
 const CheckInList = () => {
 
     const modalRef = useRef<HTMLDivElement>(null);
+    const adiveStatusRef = useRef<HTMLDivElement>(null);
+
     const [checkSelected, setCheckSelected] = useState(null) as any;
 
     const [optionSearch, setOptionSearch] = useState(0);
@@ -33,7 +37,7 @@ const CheckInList = () => {
 
     const dispatch = useDispatch<any>();
 
-    const { checkInList, totalElements, totalPages } = useSelector((state: any) => state.checkin);
+    const { checkInList, totalElements, totalPages, loading } = useSelector((state: any) => state.checkin);
 
     const actionsModal = (action: string) => {
 
@@ -58,10 +62,10 @@ const CheckInList = () => {
                 dispatch(findAll(0));
                 break;
             case 1:
-                dispatch(findByCustomerName({ offset: 0, name:nameSearch }));
+                dispatch(findByCustomerName({ offset: 0, name: nameSearch }));
                 break;
             case 2:
-                dispatch(findByDateInterval({offset:0,initialDate,finalDate}));
+                dispatch(findByDateInterval({ offset: 0, initialDate, finalDate }));
                 break;
             default:
                 break;
@@ -78,10 +82,10 @@ const CheckInList = () => {
                 dispatch(findAll(offset));
                 break;
             case 1:
-                dispatch(findByCustomerName({ offset:offset, name:nameSearch }));
+                dispatch(findByCustomerName({ offset: offset, name: nameSearch }));
                 break;
             case 2:
-                dispatch(findByDateInterval({offset,initialDate,finalDate}));
+                dispatch(findByDateInterval({ offset, initialDate, finalDate }));
                 break;
             default:
                 break;
@@ -90,14 +94,28 @@ const CheckInList = () => {
 
     }
 
+    const handleCheckOut = (checkIn: Checkin) => {
 
+        const checkOut: CheckOut = {
+            book: checkIn.book,
+            customer: checkIn.customer,
+            checkInId: Number(checkIn.id),
+        }
+
+        dispatch(checkOutSlice(checkOut));
+
+    }
 
     useEffect(() => {
         dispatch(findAll(0));
-    }, [])
+    }, [dispatch])
 
     return (
         <div className='container-main'>
+
+            {loading && (
+                <> <Loading/></>
+            )}
 
             <div className={style.content_list}>
                 <div className={style.title}>
@@ -120,18 +138,18 @@ const CheckInList = () => {
                             />
                         )}
 
-                       {(optionSearch === 2) && (
-                         <div className={style.data_interval}>
-                         <label>
-                             <span>Data inicial:</span>
-                             <input type="date" onChange={(e)=>setInitialDate(e.target.value)}/>
-                         </label>
-                         <label>
-                             <span>Data final:</span>
-                             <input type="date" onChange={(e)=>setFinalDate(e.target.value)}/>
-                         </label>
-                     </div>
-                       )}
+                        {(optionSearch === 2) && (
+                            <div className={style.data_interval}>
+                                <label>
+                                    <span>Data inicial:</span>
+                                    <input type="date" onChange={(e) => setInitialDate(e.target.value)} />
+                                </label>
+                                <label>
+                                    <span>Data final:</span>
+                                    <input type="date" onChange={(e) => setFinalDate(e.target.value)} />
+                                </label>
+                            </div>
+                        )}
 
 
                         <button onClick={handleSearch}> <FcSearch /> </button>
@@ -155,9 +173,9 @@ const CheckInList = () => {
                             <span>{checkIn.customer.name}</span>
                             <span>{checkIn.book.name}</span>
                             <span>{checkIn.state}</span>
-                            <span>{checkIn.checkout_date?.toString()}</span>
+                            <span>{new Date(String(checkIn.checkout_date)).toLocaleDateString()}</span>
                             <span>
-                                <button className='btn' title='Devolver!'><GiReturnArrow /></button>
+                                <button className='btn' title='Devolver!' onClick={() => handleCheckOut(checkIn)}><GiReturnArrow /></button>
                                 <button className='btn' title='Detalhes!' onClick={() => { actionsModal('show'); setCheckSelected(checkIn) }}><FiMoreVertical /></button>
                             </span>
 
@@ -165,13 +183,13 @@ const CheckInList = () => {
                     ))}
                 </div>
 
-               
-                    <Pagination
-                        handlePaginate={handlePaginate}
-                        pageCount={totalPages}
-                        itensPerPage={10}
-                    />
-              
+
+                <Pagination
+                    handlePaginate={handlePaginate}
+                    pageCount={totalPages}
+                    itensPerPage={10}
+                />
+
             </div>
 
             <div className="modal " ref={modalRef}>
@@ -192,21 +210,45 @@ const CheckInList = () => {
 
                                 <label className='form-group'>
                                     <span>Data do emprestimo:</span>
-                                    <input type="text" readOnly value={checkSelected.checkin_date} />
+                                    <input type="text" readOnly value={new Date(checkSelected.checkin_date).toLocaleDateString() } />
                                 </label>
 
                                 <label className='form-group'>
                                     <span>Data prevista para devolução:</span>
-                                    <input type="text" readOnly value={checkSelected.checkout_date} />
+                                    <input type="text" readOnly value={new Date(checkSelected.checkout_date).toLocaleDateString()} />
                                 </label>
+
+                                {(checkSelected.daysLate > 0) && (
+                                    <>
+                                        <label className='form-group'>
+                                            <span>Taxa por atraso:</span>
+                                            <input type="text" readOnly value={`R$ ${Number(checkSelected.taxa).toFixed(2)}`} />
+                                        </label>
+
+                                        <label className='form-group'>
+                                            <span>Dias atrasados:</span>
+                                            <input type="text" readOnly value={checkSelected.daysLate} />
+                                        </label>
+                                    </>
+                                )}
 
                                 <label className='form-group'>
                                     <span>Valor a pagar:</span>
-                                    <input type="text" readOnly value={checkSelected.valor} />
+                                    <input type="text" readOnly value={`R$ ${Number(checkSelected.valor).toFixed(2)}`} />
                                 </label>
+
                             </div>
                             <div className={style.book_info}>
                                 <img src={`${uploads}/books/${checkSelected.book.image}`} alt="img_book" />
+                                {(checkSelected.daysLate > 0) && (
+                                    <div className={style.status}
+                                        onMouseOver={() => { adiveStatusRef.current!.style.display = "block"; }}
+                                        onMouseLeave={() => { adiveStatusRef.current!.style.display = "none"; }}> <span className={style.status_late}>
+                                            <div ref={adiveStatusRef} className={`${style.advice} `} >Clientes que fizeram a devolução após o prazo terão
+                                                multa aplicada de R$1,50 para cada dia de atrazo aplicada ao valor pago alem disso poderão sofrer limitações na plataforma,
+                                                como a diminuição da quantidade de emprestimos por vez entre outras!</div>
+                                        </span> livro com atrazo na entrega. </div>
+                                )}
                             </div>
                         </div>
 

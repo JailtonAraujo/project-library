@@ -1,5 +1,6 @@
 package com.br.checkinproducer.controller.impl;
 
+import com.br.checkinproducer.DTO.CheckInDTO;
 import com.br.checkinproducer.controller.CheckInController;
 import com.br.checkinproducer.exception.PendingCheckIngException;
 import com.br.checkinproducer.model.CheckIn;
@@ -31,19 +32,19 @@ public class CheckControllerImpl implements CheckInController {
     }
 
     @Override
-    public ResponseEntity<Page<CheckIn>> getAll(Integer offset) {
+    public ResponseEntity<Page<CheckInDTO>> getAll(Integer offset) {
 
         return ResponseEntity.ok(checkInService.getAllCheckIn(offset));
 
     }
 
     @Override
-    public ResponseEntity<Page<CheckIn>> getAllByCustomerName(String name,Integer offset) {
+    public ResponseEntity<Page<CheckInDTO>> getAllByCustomerName(String name,Integer offset) {
         return ResponseEntity.ok(checkInService.getAllByUserName(offset,name));
     }
 
     @Override
-    public ResponseEntity<Page<CheckIn>> getAllByDateInterval(String initialDate, String finalDate,Integer offset) {
+    public ResponseEntity<Page<CheckInDTO>> getAllByDateInterval(String initialDate, String finalDate,Integer offset) {
 
         LocalDate initial = LocalDate.parse(initialDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         LocalDate finalD = LocalDate.parse(finalDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));

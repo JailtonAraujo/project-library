@@ -22,7 +22,6 @@ export const findAllBooks = createAsyncThunk(
 
         const data = await bookService.findAllBooks(offset);
 
-        console.log(data)
 
         return data;
 
@@ -46,8 +45,6 @@ export const findByName = createAsyncThunk(
 
         const data = await bookService.findByName(objectSearch.name, objectSearch.offset);
 
-        console.log(data)
-
         return data;
 
     }
@@ -58,8 +55,6 @@ export const findByGender = createAsyncThunk(
     async (objectSearch:any)=>{
 
         const data = await bookService.findByGender(objectSearch.name, objectSearch.offset);
-
-        console.log(data)
 
         return data;
 

@@ -26,9 +26,7 @@ public class CheckOutControllerImpl implements CheckOutController {
     @Override
     public ResponseEntity<CheckOut> checkOut(CheckOut checkOut) throws CheckInException {
 
-        checkOutService.createCheckOut(checkOut);
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return new ResponseEntity<CheckOut>(checkOutService.createCheckOut(checkOut),HttpStatus.CREATED);
     }
 
     @Override

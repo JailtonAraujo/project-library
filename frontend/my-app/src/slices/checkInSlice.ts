@@ -4,6 +4,8 @@ import { Checkin } from "../interfaces/CheckIn";
 import { notify } from "../hooks/useToast";
 
 import checkInService from "../services/checkInService";
+import checkOutService from "../services/checkOutService";
+import { CheckOut } from "../interfaces/CheckOut";
 
 const initialState = {
     checkin: {},
@@ -21,6 +23,22 @@ export const checkIn = createAsyncThunk(
     async (checkInData:Checkin, thunkApi) => {
 
         const data = await checkInService.createCheckIn(checkInData);
+
+        if(data.error){
+            return thunkApi.rejectWithValue(data);
+        }
+
+        return data;
+
+    }
+)
+
+
+export const checkOut = createAsyncThunk(
+    "checkOut",
+    async (checkOut:CheckOut,thunkApi)=>{
+
+        const data = await checkOutService.createCheckOut(checkOut);
 
         if(data.error){
             return thunkApi.rejectWithValue(data);
@@ -98,6 +116,22 @@ export const checkInSlice = createSlice({
             state.checkin=action.payload;
             notify(`CheckIn feito com sucesso!`,'success');
         }).addCase(checkIn.rejected,(state,action:any)=>{
+            state.loading = false;
+            state.error = true;
+            state.message = `Erro - ${action.payload}`;
+            notify(`Erro - ${action.payload.message}`,'error');
+        })
+
+        .addCase(checkOut.pending,(state)=>{
+            state.loading=true;
+        }).addCase(checkOut.fulfilled,(state,action:any)=>{
+            state.loading = false;
+            state.checkInList = state.checkInList.filter((check:Checkin) => check.id !== action.payload.checkInId);
+            state.totalElements = state.totalElements -1;
+            state.totalPages = Math.ceil(state.totalElements/10);
+            notify(`CheckOut feito com sucesso!`,'success');
+        }).addCase(checkOut.rejected,(state,action:any)=>{
+            state.loading = false;
             state.error = true;
             state.message = `Erro - ${action.payload}`;
             notify(`Erro - ${action.payload.message}`,'error');
