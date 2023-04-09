@@ -58,6 +58,7 @@ System of a library made in Rest arquiteture separated into microservices, Book 
 
 # Apache kafka topics:
 
+![Captura de tela 2023-04-09 004235](https://user-images.githubusercontent.com/90009939/230753089-3da1d7b6-3268-42d4-8cdf-ccf44edff248.png)
 
 
 
