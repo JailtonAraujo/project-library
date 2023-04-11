@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 @RequiredArgsConstructor
-//@Configuration
+@Configuration
 public class JsonProducerConfig {
 
     private final KafkaProperties properties;

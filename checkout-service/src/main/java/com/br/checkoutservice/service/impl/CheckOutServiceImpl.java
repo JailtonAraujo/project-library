@@ -33,7 +33,7 @@ public class CheckOutServiceImpl implements CheckOutService {
 
     private final CustomCheckOutRepository customCheckOutRepository;
 
-//    private final KafkaTemplate<String, Serializable> kafkaTemplate;
+    private final KafkaTemplate<String, Serializable> kafkaTemplate;
 
     @Override
     public Boolean checkCheckInStatus(CheckOut checkOut) throws CheckInException {
@@ -107,7 +107,7 @@ public class CheckOutServiceImpl implements CheckOutService {
 
         log.info("CheckOut sent with id: {}",checkOutCreated.getId());
 
-//        kafkaTemplate.send("checkout-topic",checkOutCreated);
+        kafkaTemplate.send("checkout-topic",checkOutCreated);
 
         return checkOutCreated;
     }

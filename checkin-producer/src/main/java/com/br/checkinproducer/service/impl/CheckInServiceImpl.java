@@ -17,10 +17,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -42,7 +44,7 @@ public class CheckInServiceImpl implements CheckInService {
 
     private final CheckInCustomRepository checkInCustomRepository;
 
-//    private final KafkaTemplate<String, Serializable> kafkaTemplate;
+    private final KafkaTemplate<String, Serializable> kafkaTemplate;
 
     @Override
     public Boolean checkBookIsAvailable(Long bookId) {
@@ -121,9 +123,9 @@ public class CheckInServiceImpl implements CheckInService {
 
         CheckIn checkInCreated = checkInRepository.save(checkIn);
 
-//        log.info("Order sent with id: {}",orderCreated.getId());
-//
-//        kafkaTemplate.send("checkin-topic",orderCreated);
+        log.info("Order sent with id: {}",checkInCreated.getId());
+
+        kafkaTemplate.send("checkin-topic",checkInCreated);
 
         return checkInCreated;
     }

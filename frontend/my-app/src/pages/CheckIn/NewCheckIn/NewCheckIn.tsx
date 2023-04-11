@@ -48,7 +48,7 @@ const NewCheckIn = () => {
     const handleSearch = () =>{
 
         if(nameSearch){
-            dispath(finfByName(nameSearch));
+            dispath(finfByName({name:nameSearch,offset:0}));
         }
 
     }
